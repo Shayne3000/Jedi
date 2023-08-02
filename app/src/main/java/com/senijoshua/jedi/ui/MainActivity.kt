@@ -1,4 +1,4 @@
-package com.senijoshua.jedi
+package com.senijoshua.jedi.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
