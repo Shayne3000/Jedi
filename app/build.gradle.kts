@@ -95,6 +95,8 @@ dependencies {
     // Hilt
     implementation("com.google.dagger:hilt-android:2.46.1")
     kapt("com.google.dagger:hilt-android-compiler:2.46.1")
+    // Hilt with Navigation Compose
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     // Compose
     implementation(platform("androidx.compose:compose-bom:2023.06.01"))
     implementation("androidx.compose.ui:ui")
