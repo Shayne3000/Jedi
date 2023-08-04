@@ -1,6 +1,8 @@
 package com.senijoshua.jedi.ui
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.compose.NavHost
+import com.senijoshua.jedi.ui.list.JediListRoute
 
 /**
  * App-level composable for app-level UI elements present across the app.
@@ -8,7 +10,9 @@ import androidx.compose.runtime.Composable
  */
 @Composable
 fun JediApp(
-    appState: JediAppState
+    appState: JediAppState = rememberJediAppState()
 ) {
-    // TODO Add the navhost
+    NavHost(navController = appState.navController, startDestination = JediListRoute) {
+
+    }
 }

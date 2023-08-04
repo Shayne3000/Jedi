@@ -86,12 +86,13 @@ dependencies {
     val roomVersion = "2.5.2"
     val retrofitVersion = "2.9.0"
     val kotlinCoroutinesVersion = "1.6.4"
+    val navigationVersion = "2.6.0"
     implementation("androidx.core:core-ktx:1.10.1")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.20"))
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.2")
     // navigation
-    implementation("androidx.navigation:navigation-compose:2.6.0")
+    implementation("androidx.navigation:navigation-compose:$navigationVersion")
     // Hilt
     implementation("com.google.dagger:hilt-android:2.46.1")
     kapt("com.google.dagger:hilt-android-compiler:2.46.1")
@@ -126,6 +127,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.squareup.okhttp3:mockwebserver")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
+    androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
