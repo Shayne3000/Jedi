@@ -11,8 +11,7 @@ fun JediListScreen(
     viewModel: JediListViewModel,
     onNavigateToJediDetail: (jediId: String) -> Unit
 ) {
-    // TODO Add JediListUiState and expose an event to a handler update the List UI state.
-    // TODO Add the viewmodel through hilt
+    // TODO Add JediListUiState and expose an event to a handler to update the List UI state.
     JediListContent()
 
 }
