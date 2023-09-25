@@ -7,7 +7,8 @@ import androidx.navigation.compose.composable
 const val JediListRoute = "list"
 
 /**
- * NavGraph for the JediListScreen which provides runtime type safety when using Navigation Compose.
+ * NavGraph for the JediList Screen which provides runtime type safety
+ * when using Navigation Compose.
  * See: https://developer.android.com/guide/navigation/design/type-safety
  *
  * The nav graph can be nested into the root graph in the NavHost.

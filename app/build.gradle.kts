@@ -87,9 +87,10 @@ dependencies {
     val retrofitVersion = "2.9.0"
     val kotlinCoroutinesVersion = "1.6.4"
     val navigationVersion = "2.6.0"
-    implementation("androidx.core:core-ktx:1.10.1")
+    val lifecycleVersion = "2.6.2"
+
+    implementation("androidx.core:core-ktx:1.12.0")
     implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.20"))
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.activity:activity-compose:1.7.2")
     // navigation
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
@@ -98,7 +99,13 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.46.1")
     // Hilt with Navigation Compose
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    // Compose
+    // ViewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    // ViewModel utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
+    // Lifecycle utilities for Compose
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
+    // Compose UI
     implementation(platform("androidx.compose:compose-bom:2023.06.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
@@ -119,6 +126,9 @@ dependencies {
     // Room
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    // Lifecycle compiler
+    kapt("androidx.lifecycle:lifecycle-compiler:$lifecycleVersion")
+    // Room compiler
     kapt("androidx.room:room-compiler:$roomVersion")
     // Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$roomVersion")
