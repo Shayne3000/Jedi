@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Jedi</string>
-    <string name="jedi_list_title">List of Jedis</string>
+    <string name="jedi_list_title">Jedi Home</string>
 </resources>

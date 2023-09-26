@@ -1,13 +1,23 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.senijoshua.jedi.ui.list
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialogDefaults.titleContentColor
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senijoshua.jedi.R
 import com.senijoshua.jedi.ui.theme.JediTheme
@@ -22,11 +32,11 @@ fun JediListScreen(
     viewModel: JediListViewModel,
     onNavigateToJediDetail: (jediId: String) -> Unit
 ) {
-    // TODO Get JediListUiState from viewmodel and expose an event to a handler i.e. ViewModel to update said UI state.
     // Read screen UI state from the business logic state holder i.e. ViewModel in a lifecycle-aware manner through the StateFlow and convert to Compose State.
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     JediListContent(
+        modifier = modifier,
         uiState = screenUiState,
         onNavigateToJediDetail = {
             onNavigateToJediDetail(it)
@@ -41,18 +51,28 @@ private fun JediListContent(
     uiState: JediListScreenUiState,
     onNavigateToJediDetail: (jediId: String) -> Unit
 ) {
-    // TODO Add a Scaffold that holds the AppBar and the rest of the screen content i.e.
-    // TODO review theming in Compose UI
     Scaffold(
         topBar = {
-            TopAppBar(title = {
-                Text(
-                    text = stringResource(id = R.string.jedi_list_title),
-                    // color = MaterialTheme.colorScheme.
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.jedi_list_title),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
-            })
+            )
         }
-    ) { paddingValues ->  
-        
+    ) { paddingValues ->
+        Column(modifier = modifier.fillMaxSize().padding(paddingValues)) {
+            // Screen layout
+
+            // TODO Add list of Jedi Item composables here with the lazyList state
+        }
+
     }
 }

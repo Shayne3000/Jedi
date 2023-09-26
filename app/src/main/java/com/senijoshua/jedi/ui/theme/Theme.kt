@@ -16,25 +16,30 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = md_theme_dark_primary,
+    onPrimary = md_theme_dark_onPrimary,
+    primaryContainer = md_theme_dark_primaryContainer,
+    onPrimaryContainer = md_theme_dark_onPrimaryContainer,
+    onSecondary = md_theme_dark_onSecondary,
+    tertiary = md_theme_dark_tertiary,
+    onTertiary = md_theme_dark_onTertiary,
+    surface = md_theme_dark_surface,
+    onSurface = md_theme_dark_onSurface
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+// onPrimary, onSecondary, onTertiary, Surface, Surface container/background onBackground
 
-    /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-    */
+private val LightColorScheme = lightColorScheme(
+    primary = md_theme_light_primary,
+    onPrimary = md_theme_light_onPrimary,
+    primaryContainer = md_theme_light_primaryContainer,
+    onPrimaryContainer = md_theme_light_onPrimaryContainer,
+    secondary = md_theme_light_secondary,
+    onSecondary = md_theme_light_onSecondary,
+    tertiary = md_theme_light_tertiary,
+    onTertiary = md_theme_light_onTertiary,
+    surface = md_theme_light_surface,
+    onSurface = md_theme_light_onSurface
 )
 
 @Composable
@@ -49,11 +54,12 @@ fun JediTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
     }
+
     val view = LocalView.current
+
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
@@ -65,6 +71,7 @@ fun JediTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
+        shapes = shapes,
         content = content
     )
 }
