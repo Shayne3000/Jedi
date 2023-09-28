@@ -24,7 +24,8 @@ private val DarkColorScheme = darkColorScheme(
     tertiary = md_theme_dark_tertiary,
     onTertiary = md_theme_dark_onTertiary,
     surface = md_theme_dark_surface,
-    onSurface = md_theme_dark_onSurface
+    onSurface = md_theme_dark_onSurface,
+    surfaceVariant = md_theme_dark_surfaceVariant
 )
 
 // onPrimary, onSecondary, onTertiary, Surface, Surface container/background onBackground
@@ -39,7 +40,8 @@ private val LightColorScheme = lightColorScheme(
     tertiary = md_theme_light_tertiary,
     onTertiary = md_theme_light_onTertiary,
     surface = md_theme_light_surface,
-    onSurface = md_theme_light_onSurface
+    onSurface = md_theme_light_onSurface,
+    surfaceVariant = md_theme_light_surfaceVariant
 )
 
 @Composable

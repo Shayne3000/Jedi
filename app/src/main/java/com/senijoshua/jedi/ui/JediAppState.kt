@@ -10,8 +10,7 @@ import androidx.navigation.compose.rememberNavController
  */
 class JediAppState(
     val navController: NavHostController
-) {
-}
+)
 
 /**
  * Creates the [JediAppState] and stores it in the Composition during initial Composition
