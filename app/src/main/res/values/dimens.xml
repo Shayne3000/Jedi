@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="horizontal_padding">16dp</dimen>
+    <dimen name="vertical_padding">16dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="list_item_vertical_padding">14dp</dimen>
+    <dimen name="list_item_card_vertical_padding">8dp</dimen>
+    <dimen name="list_item_height">64dp</dimen>
+    <dimen name="progress_indicator_width">64dp</dimen>
+    <dimen name="header_height">192dp</dimen>
+    <dimen name="header_padding">16dp</dimen>
+    <dimen name="header_image_width">100dp</dimen>
+</resources>

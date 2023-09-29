@@ -5,6 +5,7 @@ package com.senijoshua.jedi.ui.model
  * the hierarchy.
  */
 data class Jedi(
+    val id: String,
     val name: String,
     val gender: String
 )
