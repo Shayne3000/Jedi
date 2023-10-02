@@ -157,37 +157,38 @@ private fun JediItem(
                 horizontal = dimensionResource(id = R.dimen.horizontal_padding)
             )
             .height(dimensionResource(id = R.dimen.list_item_height))
-            .fillMaxWidth()
-            .clickable { onJediClicked(jedi.id) },
+            .fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(id = R.dimen.card_elevation)),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        Text(
-            modifier = Modifier.padding(
-                top = dimensionResource(id = R.dimen.list_item_vertical_padding),
-                start = dimensionResource(
-                    id = R.dimen.horizontal_padding
-                )
-            ),
-            text = jedi.name,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurface,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1
-        )
+        Column(modifier = Modifier.fillMaxSize().clickable { onJediClicked(jedi.id) }) {
+            Text(
+                modifier = Modifier.padding(
+                    top = dimensionResource(id = R.dimen.list_item_vertical_padding),
+                    start = dimensionResource(
+                        id = R.dimen.horizontal_padding
+                    )
+                ),
+                text = jedi.name,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
+            )
 
-        Text(
-            modifier = Modifier.padding(
-                start = dimensionResource(
-                    id = R.dimen.horizontal_padding
-                )
-            ),
-            text = jedi.gender,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurface,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1
-        )
+            Text(
+                modifier = Modifier.padding(
+                    start = dimensionResource(
+                        id = R.dimen.horizontal_padding
+                    )
+                ),
+                text = jedi.gender,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
+            )
+        }
     }
 }
 
