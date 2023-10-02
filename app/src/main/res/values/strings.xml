@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Jedi</string>
     <string name="jedi_list_title">Jedi Home</string>
+    <string name="jedi_list_screen_header">Jedi Masters</string>
 </resources>

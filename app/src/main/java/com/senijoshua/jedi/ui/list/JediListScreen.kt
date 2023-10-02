@@ -5,13 +5,10 @@ package com.senijoshua.jedi.ui.list
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -35,12 +32,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senijoshua.jedi.R
-import com.senijoshua.jedi.ui.util.JediPreview
 import com.senijoshua.jedi.ui.model.Jedi
+import com.senijoshua.jedi.ui.model.jediList
+import com.senijoshua.jedi.ui.model.jediListPreviewUiState
 import com.senijoshua.jedi.ui.theme.JediTheme
+import com.senijoshua.jedi.ui.util.JediPreview
 
 /**
  * Screen for the Jedi List that exposes an event to navigate to the detail screen
@@ -89,8 +87,8 @@ private fun JediListContent(
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary
                 )
             )
         },
@@ -100,23 +98,39 @@ private fun JediListContent(
             modifier = modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            verticalArrangement = Arrangement.SpaceEvenly,
-            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Screen layout
-            if (uiState.isLoadingJedis) {
-                CircularProgressIndicator(
-                    modifier = Modifier.width(dimensionResource(id = R.dimen.progress_indicator_width)),
-                    color = MaterialTheme.colorScheme.primary,
-                    trackColor = MaterialTheme.colorScheme.surfaceVariant
-                )
-            }
+            Text(
+                modifier = Modifier
+                    .padding(
+                        start = dimensionResource(id = R.dimen.horizontal_padding),
+                        top = dimensionResource(
+                            id = R.dimen.vertical_padding,
+                        )
+                    )
+                    .fillMaxWidth(),
+                text = stringResource(id = R.string.jedi_list_screen_header),
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
 
-            LazyColumn {
-                items(items = uiState.jedis, key = { jedi -> jedi.id }) {
-                    JediItem(jedi = it, onJediClicked = { jediId ->
-                        onNavigateToJediDetail(jediId)
-                    })
+            if (uiState.isLoadingJedis) {
+                Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.width(dimensionResource(id = R.dimen.progress_indicator_width)),
+                        color = MaterialTheme.colorScheme.primary,
+                        trackColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+                }
+            } else if (jediList.isNotEmpty()) {
+                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                    items(items = uiState.jedis, key = { jedi -> jedi.id }) {
+                        JediItem(jedi = it, onJediClicked = { jediId ->
+                            onNavigateToJediDetail(jediId)
+                        })
+                    }
                 }
             }
 
@@ -127,7 +141,6 @@ private fun JediListContent(
                 }
             }
         }
-
     }
 }
 
@@ -176,7 +189,6 @@ private fun JediItem(
             maxLines = 1
         )
     }
-    //  TODO Add a preview composable for the list item and the overall screen with fake data
 }
 
 @JediPreview
@@ -187,9 +199,13 @@ fun JediItemPreview() {
     }
 }
 
+@JediPreview
 @Composable
 fun JediListPreview() {
     JediTheme {
-
+        JediListContent(
+            uiState = jediListPreviewUiState,
+            onNavigateToJediDetail = {},
+            onErrorMessageShown = {})
     }
 }
