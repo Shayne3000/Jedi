@@ -1,11 +1,27 @@
 package com.senijoshua.jedi.di
 
+import android.content.Context
+import androidx.room.Room
+import com.senijoshua.jedi.data.local.db.JediDatabase
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DatabaseModule {
-    // Install in the singleton component because we want only one instance of the DB in the app.
+object DatabaseModule {
+
+    @Singleton
+    @Provides
+    fun provideJediDatabase(@ApplicationContext context: Context): JediDatabase {
+        return Room.databaseBuilder(context, JediDatabase::class.java, JediDatabase.DATABASE_NAME)
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideJediDao(jediDb: JediDatabase) = jediDb.jediDao()
 }

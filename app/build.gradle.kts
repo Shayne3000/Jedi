@@ -83,7 +83,6 @@ kapt {
 }
 
 dependencies {
-    val roomVersion = "2.5.2"
     val retrofitVersion = "2.9.0"
     val kotlinCoroutinesVersion = "1.6.4"
     val navigationVersion = "2.6.0"
