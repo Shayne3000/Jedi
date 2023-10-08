@@ -35,8 +35,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senijoshua.jedi.R
 import com.senijoshua.jedi.data.Jedi
-import com.senijoshua.jedi.ui.model.jediList
-import com.senijoshua.jedi.ui.model.jediListPreviewUiState
 import com.senijoshua.jedi.ui.theme.JediTheme
 import com.senijoshua.jedi.ui.util.JediPreview
 
@@ -48,7 +46,7 @@ import com.senijoshua.jedi.ui.util.JediPreview
 fun JediListScreen(
     modifier: Modifier = Modifier,
     viewModel: JediListViewModel,
-    onNavigateToJediDetail: (jediId: String) -> Unit
+    onNavigateToJediDetail: (jediId: Int) -> Unit
 ) {
     // Read screen UI state from the business logic state holder i.e. ViewModel in a lifecycle-aware manner through the StateFlow and convert to Compose State.
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -70,7 +68,7 @@ fun JediListScreen(
 private fun JediListContent(
     modifier: Modifier = Modifier,
     uiState: JediListScreenUiState,
-    onNavigateToJediDetail: (jediId: String) -> Unit,
+    onNavigateToJediDetail: (jediId: Int) -> Unit,
     onErrorMessageShown: () -> Unit
 ) {
     // Hoist the (snack bar host) state outside the Scaffold and store it in the composition.
@@ -117,14 +115,18 @@ private fun JediListContent(
             )
 
             if (uiState.isLoadingJedis) {
-                Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     CircularProgressIndicator(
                         modifier = Modifier.width(dimensionResource(id = R.dimen.progress_indicator_width)),
                         color = MaterialTheme.colorScheme.primary,
                         trackColor = MaterialTheme.colorScheme.surfaceVariant
                     )
                 }
-            } else if (jediList.isNotEmpty()) {
+            } else if (uiState.jedis.isNotEmpty()) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(items = uiState.jedis, key = { jedi -> jedi.id }) {
                         JediItem(jedi = it, onJediClicked = { jediId ->
@@ -148,7 +150,7 @@ private fun JediListContent(
 private fun JediItem(
     modifier: Modifier = Modifier,
     jedi: Jedi,
-    onJediClicked: (String) -> Unit
+    onJediClicked: (Int) -> Unit
 ) {
     ElevatedCard(
         modifier = modifier
@@ -161,7 +163,9 @@ private fun JediItem(
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(id = R.dimen.card_elevation)),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
-        Column(modifier = Modifier.fillMaxSize().clickable { onJediClicked(jedi.id) }) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .clickable { onJediClicked(jedi.id) }) {
             Text(
                 modifier = Modifier.padding(
                     top = dimensionResource(id = R.dimen.list_item_vertical_padding),
@@ -196,7 +200,7 @@ private fun JediItem(
 @Composable
 fun JediItemPreview() {
     JediTheme {
-        JediItem(jedi = Jedi("Luke_id", "Luke Skywalker", "Male"), onJediClicked = {})
+        JediItem(jedi = Jedi(1, "Luke Skywalker", "Male", "", "", "", ""), onJediClicked = {})
     }
 }
 

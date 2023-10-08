@@ -8,7 +8,11 @@ package com.senijoshua.jedi.data
  * the representation of a Jedi type in the presentation layer.
  */
 data class Jedi(
-    val id: String,
+    val id: Int,
     val name: String,
-    val gender: String
+    val gender: String,
+    val height: String,
+    val mass: String,
+    val hairColor: String,
+    val skinColor: String
 )

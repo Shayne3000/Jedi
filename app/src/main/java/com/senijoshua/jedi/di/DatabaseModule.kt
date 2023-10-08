@@ -2,7 +2,7 @@ package com.senijoshua.jedi.di
 
 import android.content.Context
 import androidx.room.Room
-import com.senijoshua.jedi.data.local.db.JediDatabase
+import com.senijoshua.jedi.data.local.JediDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

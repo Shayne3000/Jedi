@@ -14,7 +14,7 @@ private const val jediDetailRoute = "detail/{jediId}"
  * This helps to foster type safety as you specifically define what route gets used for navigation
  * and you do not allow callers to just specify any value as the route to which to navigate.
  */
-fun NavController.navigateToDetailScreen(jediId: String) {
+fun NavController.navigateToDetailScreen(jediId: Int) {
     this.navigate("detail/$jediId")
 }
 

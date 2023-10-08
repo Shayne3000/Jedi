@@ -1,4 +1,4 @@
-package com.senijoshua.jedi.data.local.db
+package com.senijoshua.jedi.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

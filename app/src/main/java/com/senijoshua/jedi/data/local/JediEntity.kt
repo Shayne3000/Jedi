@@ -1,13 +1,16 @@
-package com.senijoshua.jedi.data.local.db
+package com.senijoshua.jedi.data.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "jedis")
+/**
+ * Representation of a Jedi as columns of the Jedi table.
+ */
+@Entity(tableName = "jedi")
 data class JediEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val name: String,
     val gender: String,
     val height: String,
