@@ -5,6 +5,7 @@ import com.senijoshua.jedi.data.remote.JediApi
 import com.senijoshua.jedi.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
@@ -15,15 +16,19 @@ import javax.inject.Inject
  * from higher layers of the architectural hierarchy.
  *
  * This repository facilitates an offline-first paradigm by employing the DB as
- * the single source of truth for getting a list of Jedi.
+ * the single source of truth for getting a list of Jedis.
+ *
  */
 class JediRepository @Inject constructor(
     private val apiService: JediApi,
     private val db: JediDao,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ){
-    // Return an observable stream of jedis from the DB that retrieves from the network if the table is empty
-    // TODO might need a refresh strategy
+    /**
+     * An observable stream of jedis is returned from the DB which allows us to be
+     * notified of any updates to the Jedi table in the DB and retrieves fresh data from the
+     * network if the table is empty.
+     */
     suspend fun getJedis(): Flow<List<Jedi>> {
         return withContext(dispatcher) {
              db.getAllJedis()
@@ -33,7 +38,7 @@ class JediRepository @Inject constructor(
                     if (jediList.isEmpty()) {
                         getJediRemote()
                     }
-                } // TODO convert flow to a Result type for the higher layers i.e. presentation layer using asResult()
+                }.distinctUntilChanged() // TODO convert flow to a Result type for the higher layers i.e. presentation layer using asResult()
 
 
             // TODO May not need to move the execution of the coroutine off the main thread to the
