@@ -1,5 +1,6 @@
 package com.senijoshua.jedi.ui.model
 
+import com.senijoshua.jedi.data.Jedi
 import com.senijoshua.jedi.ui.list.JediListScreenUiState
 
 val jediList = listOf(

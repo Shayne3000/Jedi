@@ -1,7 +1,7 @@
 package com.senijoshua.jedi.ui.list
 
 import androidx.lifecycle.ViewModel
-import com.senijoshua.jedi.ui.model.Jedi
+import com.senijoshua.jedi.data.Jedi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
