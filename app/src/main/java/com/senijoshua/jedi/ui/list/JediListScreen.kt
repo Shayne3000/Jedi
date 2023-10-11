@@ -146,7 +146,7 @@ private fun JediListContent(
                     }
                 }
             }
-            onScreenCreated()
+            // onScreenCreated()
         }
     }
 }
