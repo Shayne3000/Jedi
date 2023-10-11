@@ -41,7 +41,8 @@ class JediRepository @Inject constructor(
                     }
                 }
                  // We apply the distinctUntilChanged operator in the chain to ensure we only get notified when the data we're interested in changes.
-                .distinctUntilChanged().asResult()
+                .distinctUntilChanged()
+                .asResult()
 
             // TODO May not need to move the execution of the coroutine off the main thread to the
             //  io thread with an injected Dispatcher because both Retrofit & Room now performs suspendable operations using Dispatcher.IO by default.

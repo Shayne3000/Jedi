@@ -20,10 +20,12 @@ class JediListViewModel @Inject constructor(
     val uiState: StateFlow<JediListScreenUiState> = _uiState
 
     init {
-        _uiState.update { currentUiState -> currentUiState.copy(isLoadingJedis = true) }
+        loadJedis()
     }
 
     fun loadJedis() {
+        _uiState.update { currentUiState -> currentUiState.copy(isLoadingJedis = true) }
+
         viewModelScope.launch {
             jediRepository.getJedis().collect { result ->
                 when (result) {
@@ -37,7 +39,12 @@ class JediListViewModel @Inject constructor(
                     }
 
                     is Result.Error -> {
-                        _uiState.update { currentUiState -> currentUiState.copy(errorMessage = result.error.message) }
+                        _uiState.update { currentUiState ->
+                            currentUiState.copy(
+                                isLoadingJedis = false,
+                                errorMessage = result.error.message
+                            )
+                        }
                     }
                 }
             }

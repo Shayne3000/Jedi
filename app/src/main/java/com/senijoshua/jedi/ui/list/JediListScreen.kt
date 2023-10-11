@@ -54,9 +54,6 @@ fun JediListScreen(
     JediListContent(
         modifier = modifier,
         uiState = screenUiState,
-        onScreenCreated = {
-            viewModel.loadJedis()
-        },
         onNavigateToJediDetail = {
             onNavigateToJediDetail(it)
         },
@@ -71,7 +68,6 @@ fun JediListScreen(
 private fun JediListContent(
     modifier: Modifier = Modifier,
     uiState: JediListScreenUiState,
-    onScreenCreated: () -> Unit = {},
     onNavigateToJediDetail: (jediId: Int) -> Unit = {},
     onErrorMessageShown: () -> Unit = {}
 ) {
@@ -146,7 +142,6 @@ private fun JediListContent(
                     }
                 }
             }
-            // onScreenCreated()
         }
     }
 }
