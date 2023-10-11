@@ -29,26 +29,23 @@ class JediRepository @Inject constructor(
      * notified of any updates to the Jedi table in the DB and retrieves fresh data from the
      * network if the table is empty.
      */
-    suspend fun getJedis(): Flow<List<Jedi>> {
+    suspend fun getJedis(): Flow<Result<List<Jedi>>> {
         return withContext(dispatcher) {
              db.getAllJedis()
                 .map { jediList ->
                     jediList.toExternalModel()
                 }.onEach { jediList ->
                     if (jediList.isEmpty()) {
-                        getJediRemote()
+                        val jediResponse = apiService.getJedis()
+                        db.insertAll(jediResponse.results.toLocal())
                     }
-                }.distinctUntilChanged() // TODO convert flow to a Result type for the higher layers i.e. presentation layer using asResult()
-
+                }
+                 // We apply the distinctUntilChanged operator in the chain to ensure we only get notified when the data we're interested in changes.
+                .distinctUntilChanged().asResult()
 
             // TODO May not need to move the execution of the coroutine off the main thread to the
             //  io thread with an injected Dispatcher because both Retrofit & Room now performs suspendable operations using Dispatcher.IO by default.
             //  Though that makes one wonder how to inject a test dispatcher to unit test this function when JediRepo is under test.
         }
-    }
-
-    private suspend fun getJediRemote() {
-        val jediResponse = apiService.getJedis()
-        db.insertAll(jediResponse.results.toLocal())
     }
 }

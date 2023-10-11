@@ -54,6 +54,9 @@ fun JediListScreen(
     JediListContent(
         modifier = modifier,
         uiState = screenUiState,
+        onScreenCreated = {
+            viewModel.loadJedis()
+        },
         onNavigateToJediDetail = {
             onNavigateToJediDetail(it)
         },
@@ -68,11 +71,19 @@ fun JediListScreen(
 private fun JediListContent(
     modifier: Modifier = Modifier,
     uiState: JediListScreenUiState,
-    onNavigateToJediDetail: (jediId: Int) -> Unit,
-    onErrorMessageShown: () -> Unit
+    onScreenCreated: () -> Unit = {},
+    onNavigateToJediDetail: (jediId: Int) -> Unit = {},
+    onErrorMessageShown: () -> Unit = {}
 ) {
     // Hoist the (snack bar host) state outside the Scaffold and store it in the composition.
     val snackbarHostState = remember { SnackbarHostState() }
+
+    uiState.errorMessage?.let { message ->
+        LaunchedEffect(snackbarHostState) {
+            snackbarHostState.showSnackbar(message = message)
+            onErrorMessageShown()
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -135,13 +146,7 @@ private fun JediListContent(
                     }
                 }
             }
-
-            uiState.errorMessage?.let { message ->
-                LaunchedEffect(snackbarHostState) {
-                    snackbarHostState.showSnackbar(message = message)
-                    onErrorMessageShown()
-                }
-            }
+            onScreenCreated()
         }
     }
 }
@@ -150,7 +155,7 @@ private fun JediListContent(
 private fun JediItem(
     modifier: Modifier = Modifier,
     jedi: Jedi,
-    onJediClicked: (Int) -> Unit
+    onJediClicked: (Int) -> Unit = {}
 ) {
     ElevatedCard(
         modifier = modifier
@@ -200,7 +205,7 @@ private fun JediItem(
 @Composable
 fun JediItemPreview() {
     JediTheme {
-        JediItem(jedi = Jedi(1, "Luke Skywalker", "Male", "", "", "", ""), onJediClicked = {})
+        JediItem(jedi = Jedi(1, "Luke Skywalker", "Male", "", "", "", ""))
     }
 }
 
@@ -209,8 +214,7 @@ fun JediItemPreview() {
 fun JediListPreview() {
     JediTheme {
         JediListContent(
-            uiState = jediListPreviewUiState,
-            onNavigateToJediDetail = {},
-            onErrorMessageShown = {})
+            uiState = jediListPreviewUiState
+        )
     }
 }

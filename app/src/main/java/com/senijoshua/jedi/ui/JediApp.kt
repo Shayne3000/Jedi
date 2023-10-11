@@ -9,7 +9,7 @@ import com.senijoshua.jedi.ui.list.jediListScreen
 
 /**
  * App-level composable for app-level UI elements and UI logic.
- * It holds the global coroutineState, NavHost, and the Snackbar Host.
+ * It holds the NavHost into which composable screens are swapped in and out.
  */
 @Composable
 fun JediApp(

@@ -17,7 +17,6 @@ interface JediDao {
     // Use Flows to track changes in the Jedi table to keep the displayed list of Jedis in the UI up-to-date
     @Query("SELECT * FROM jedi")
     fun getAllJedis(): Flow<List<JediEntity>>
-    // TODO apply the distinctUntilChanged operator after the collect operator in the chain to ensure we only get notified when the data we're interested in changes
 
     @Query("SELECT * FROM jedi WHERE id = :jediId")
     suspend fun getJediById(jediId: Int): JediEntity
