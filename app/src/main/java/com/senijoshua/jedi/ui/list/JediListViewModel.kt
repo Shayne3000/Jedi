@@ -23,7 +23,7 @@ class JediListViewModel @Inject constructor(
         loadJedis()
     }
 
-    fun loadJedis() {
+    private fun loadJedis() {
         _uiState.update { currentUiState -> currentUiState.copy(isLoadingJedis = true) }
 
         viewModelScope.launch {

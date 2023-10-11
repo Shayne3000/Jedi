@@ -37,12 +37,13 @@ class JediRepository @Inject constructor(
                 }.onEach { jediList ->
                     if (jediList.isEmpty()) {
                         val jediResponse = apiService.getJedis()
+                        // TODO Implement error parsing for network errors and send it downstream.
                         db.insertAll(jediResponse.results.toLocal())
                     }
                 }
                  // We apply the distinctUntilChanged operator in the chain to ensure we only get notified when the data we're interested in changes.
-                .distinctUntilChanged()
                 .asResult()
+                .distinctUntilChanged()
 
             // TODO May not need to move the execution of the coroutine off the main thread to the
             //  io thread with an injected Dispatcher because both Retrofit & Room now performs suspendable operations using Dispatcher.IO by default.
