@@ -21,4 +21,6 @@ sealed class Result<out T> {
  */
 fun <T> Flow<T>.asResult(): Flow<Result<T>> = this.map<T, Result<T>> {
     Result.Success(it)
-}.catch { Result.Error(it) }
+}.catch {
+    emit(Result.Error(it))
+}
