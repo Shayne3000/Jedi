@@ -14,14 +14,14 @@ const val JediListRoute = "list"
  * The nav graph can be nested into the root graph in the NavHost.
  */
 fun NavGraphBuilder.jediListScreen(
-    onNavigateToJediDetail: (jediId: Int) -> Unit
+    onNavigateToJediDetail: (Int, String) -> Unit
 ) {
     composable(JediListRoute){
         val viewModel = hiltViewModel<JediListViewModel>()
-        JediListScreen(viewModel = viewModel, onNavigateToJediDetail = {
+        JediListScreen(viewModel = viewModel, onNavigateToJediDetail = { jediId, jediName ->
             // handle event exposed by the screen
             // trigger the navigation event exposed to the caller of this graph for handling.
-            onNavigateToJediDetail(it)
+            onNavigateToJediDetail(jediId, jediName)
         })
     }
 }

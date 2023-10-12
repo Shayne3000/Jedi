@@ -3,9 +3,15 @@ package com.senijoshua.jedi.ui.detail
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 
-private const val jediDetailRoute = "detail/{jediId}"
+private const val JEDI_DETAIL_ID_ARG = "jediId"
+private const val JEDI_DETAIL_NAME_ARG = "jediName"
+
+private const val JEDI_DETAIL_ROUTE =
+    "detail/{$JEDI_DETAIL_ID_ARG}?$JEDI_DETAIL_NAME_ARG={$JEDI_DETAIL_NAME_ARG}"
 
 /**
  * Extension function to allow other destinations to navigate to the detail screen. Ideally, each
@@ -14,8 +20,8 @@ private const val jediDetailRoute = "detail/{jediId}"
  * This helps to foster type safety as you specifically define what route gets used for navigation
  * and you do not allow callers to just specify any value as the route to which to navigate.
  */
-fun NavController.navigateToDetailScreen(jediId: Int) {
-    this.navigate("detail/$jediId")
+fun NavController.navigateToDetailScreen(jediId: Int, jediName: String) {
+    this.navigate("detail/$jediId?$JEDI_DETAIL_NAME_ARG=$jediName")
 }
 
 /**
@@ -25,9 +31,20 @@ fun NavController.navigateToDetailScreen(jediId: Int) {
  *
  * The graph will be nested into the NavHost.
  */
-fun NavGraphBuilder.jediDetailScreen() {
-    composable(jediDetailRoute) {
+fun NavGraphBuilder.jediDetailScreen(
+    onBackClicked: () -> Unit
+) {
+    composable(
+        JEDI_DETAIL_ROUTE,
+        arguments = listOf(navArgument(JEDI_DETAIL_NAME_ARG) { type = NavType.StringType })
+    ) { backStackEntry ->
         val jediDetailViewModel = hiltViewModel<JediDetailViewModel>()
-        JediDetailScreen(jediDetailViewModel)
+        // Extract the jediName argument here since it is needed in the TopAppBar, but retrieve the jediId argument in the ViewModel.
+        JediDetailScreen(
+            topBarTitle = backStackEntry.arguments?.getString(JEDI_DETAIL_NAME_ARG)!!,
+            viewModel = jediDetailViewModel,
+            onBackClicked = {
+                onBackClicked()
+            })
     }
 }

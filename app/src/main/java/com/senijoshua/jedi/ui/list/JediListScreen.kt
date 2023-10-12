@@ -46,7 +46,7 @@ import com.senijoshua.jedi.ui.util.JediPreview
 fun JediListScreen(
     modifier: Modifier = Modifier,
     viewModel: JediListViewModel,
-    onNavigateToJediDetail: (jediId: Int) -> Unit
+    onNavigateToJediDetail: (Int, String) -> Unit
 ) {
     // Read screen UI state from the business logic state holder i.e. ViewModel in a lifecycle-aware manner through the StateFlow and convert to Compose State.
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -54,8 +54,8 @@ fun JediListScreen(
     JediListContent(
         modifier = modifier,
         uiState = screenUiState,
-        onNavigateToJediDetail = {
-            onNavigateToJediDetail(it)
+        onNavigateToJediDetail = { id, name ->
+            onNavigateToJediDetail(id, name)
         },
         onErrorMessageShown = {
             viewModel.errorMessageShown()
@@ -68,7 +68,7 @@ fun JediListScreen(
 private fun JediListContent(
     modifier: Modifier = Modifier,
     uiState: JediListScreenUiState,
-    onNavigateToJediDetail: (jediId: Int) -> Unit = {},
+    onNavigateToJediDetail: (Int, String) -> Unit = { _, _ ->  },
     onErrorMessageShown: () -> Unit = {}
 ) {
     // Hoist the (snack bar host) state outside the Scaffold and store it in the composition.
@@ -136,8 +136,8 @@ private fun JediListContent(
             } else if (uiState.jedis.isNotEmpty()) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(items = uiState.jedis, key = { jedi -> jedi.id }) {
-                        JediItem(jedi = it, onJediClicked = { jediId ->
-                            onNavigateToJediDetail(jediId)
+                        JediItem(jedi = it, onJediClicked = { jediId, jediName ->
+                            onNavigateToJediDetail(jediId, jediName)
                         })
                     }
                 }
@@ -150,7 +150,7 @@ private fun JediListContent(
 private fun JediItem(
     modifier: Modifier = Modifier,
     jedi: Jedi,
-    onJediClicked: (Int) -> Unit = {}
+    onJediClicked: (Int, String) -> Unit = { _, _ ->  }
 ) {
     ElevatedCard(
         modifier = modifier
@@ -165,7 +165,7 @@ private fun JediItem(
     ) {
         Column(modifier = Modifier
             .fillMaxSize()
-            .clickable { onJediClicked(jedi.id) }) {
+            .clickable { onJediClicked(jedi.id, jedi.name) }) {
             Text(
                 modifier = Modifier.padding(
                     top = dimensionResource(id = R.dimen.list_item_vertical_padding),
@@ -209,7 +209,7 @@ fun JediItemPreview() {
 fun JediListPreview() {
     JediTheme {
         JediListContent(
-            uiState = jediListPreviewUiState
+            uiState = jediListPreviewUiState,
         )
     }
 }

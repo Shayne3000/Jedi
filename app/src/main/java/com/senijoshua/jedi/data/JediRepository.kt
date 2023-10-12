@@ -23,7 +23,7 @@ class JediRepository @Inject constructor(
     private val apiService: JediApi,
     private val db: JediDao,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
-){
+) {
     /**
      * An observable stream of jedis is returned from the DB which allows us to be
      * notified of any updates to the Jedi table in the DB and retrieves fresh data from the
@@ -31,7 +31,7 @@ class JediRepository @Inject constructor(
      */
     suspend fun getJedis(): Flow<Result<List<Jedi>>> {
         return withContext(dispatcher) {
-             db.getAllJedis()
+            db.getAllJedis()
                 .map { jediList ->
                     jediList.toExternalModel()
                 }.onEach { jediList ->
@@ -40,7 +40,7 @@ class JediRepository @Inject constructor(
                         db.insertAll(jediResponse.results.toLocal())
                     }
                 }
-                 // We apply the distinctUntilChanged operator in the chain to ensure we only get notified when the data we're interested in changes.
+                // We apply the distinctUntilChanged operator in the chain to ensure we only get notified when the data we're interested in changes.
                 .distinctUntilChanged()
                 .asResult()
 
@@ -48,6 +48,16 @@ class JediRepository @Inject constructor(
             // TODO May not need to move the execution of the coroutine off the main thread to the
             //  io thread with an injected Dispatcher because both Retrofit & Room now performs suspendable operations using Dispatcher.IO by default.
             //  Though that makes one wonder how to inject a test dispatcher to unit test this function when JediRepo is under test.
+        }
+    }
+
+    suspend fun getJediById(jediId: Int): Result<Jedi> {
+        return withContext(dispatcher) {
+            try {
+                Result.Success(db.getJediById(jediId).toExternalModel())
+            } catch (e: Exception) {
+                Result.Error(e)
+            }
         }
     }
 }

@@ -2,4 +2,5 @@
     <string name="app_name">Jedi</string>
     <string name="jedi_list_title">Jedi Home</string>
     <string name="jedi_list_screen_header">Jedi Masters</string>
+    <string name="internet_issue_error">Request failed. Please check your internet connection and try again.</string>
 </resources>

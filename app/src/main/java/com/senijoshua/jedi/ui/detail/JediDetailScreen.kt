@@ -1,12 +1,16 @@
 package com.senijoshua.jedi.ui.detail
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 
 @Composable
 fun JediDetailScreen(
-    viewModel: JediDetailViewModel
+    modifier: Modifier = Modifier,
+    viewModel: JediDetailViewModel,
+    topBarTitle: String = "",
+    onBackClicked: () -> Unit
 ) {
-    // TODO Add JediListUiState and expose an event to a handler to update the List UI state.
+    val screenUiState by
     JediDetailContent()
 }
 

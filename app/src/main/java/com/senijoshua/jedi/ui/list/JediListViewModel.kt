@@ -51,7 +51,6 @@ class JediListViewModel @Inject constructor(
         }
     }
 
-
     fun errorMessageShown() {
         _uiState.update { currentUiState ->
             currentUiState.copy(errorMessage = null)
@@ -61,7 +60,6 @@ class JediListViewModel @Inject constructor(
 
 /**
  * Data model representing the UI state of the JediListScreen at any instant in time.
- * // TODO Use a Sealed interface for states in the detail screen instead of a data class.
  */
 data class JediListScreenUiState(
     val isLoadingJedis: Boolean = false,
