@@ -7,7 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 
-private const val JEDI_DETAIL_ID_ARG = "jediId"
+const val JEDI_DETAIL_ID_ARG = "jediId"
 private const val JEDI_DETAIL_NAME_ARG = "jediName"
 
 private const val JEDI_DETAIL_ROUTE =
