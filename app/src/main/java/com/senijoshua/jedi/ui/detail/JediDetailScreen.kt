@@ -23,6 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senijoshua.jedi.R
+import com.senijoshua.jedi.data.Jedi
+import com.senijoshua.jedi.ui.theme.JediTheme
+import com.senijoshua.jedi.ui.util.JediPreview
 
 @Composable
 fun JediDetailScreen(
@@ -46,12 +49,13 @@ private fun JediDetailContent(
     modifier: Modifier = Modifier,
     topBarTitle: String = "",
     uiState: JediDetailScreenUiState,
-    onErrorMessageShown: () -> Unit,
-    onBackClicked: () -> Unit
+    onErrorMessageShown: () -> Unit = {},
+    onBackClicked: () -> Unit = {}
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
 
     Scaffold(topBar = {
+        // TODO Add colors for the topappbar.
         TopAppBar(title = {
             Text(
                 text = topBarTitle,
@@ -72,10 +76,12 @@ private fun JediDetailContent(
             when (uiState) {
                 is JediDetailScreenUiState.Loading -> {
                     // show circular progress indicator
+
                 }
 
                 is JediDetailScreenUiState.Success -> {
                     // load Screen details
+
                 }
 
                 is JediDetailScreenUiState.Error -> {
@@ -88,5 +94,19 @@ private fun JediDetailContent(
                 }
             }
         }
+    }
+}
+
+@JediPreview
+@Composable
+private fun JediDetailPreview() {
+    val previewScreenUiState = JediDetailScreenUiState.Success(
+        Jedi(
+            1, "Luke Skywalker", "male", "170cm", "81kg", "Brown", "Green"
+        )
+    )
+
+    JediTheme {
+        JediDetailContent(topBarTitle = "Luke Skywalker", uiState = previewScreenUiState)
     }
 }
