@@ -3,17 +3,14 @@
 package com.senijoshua.jedi.ui.list
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -27,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -35,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senijoshua.jedi.R
 import com.senijoshua.jedi.data.Jedi
+import com.senijoshua.jedi.ui.components.JediCircularProgressIndicator
 import com.senijoshua.jedi.ui.theme.JediTheme
 import com.senijoshua.jedi.ui.util.JediPreview
 
@@ -102,7 +99,7 @@ private fun JediListContent(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(paddingValues)
         ) {
             // Screen layout
             Text(
@@ -122,17 +119,7 @@ private fun JediListContent(
             )
 
             if (uiState.isLoadingJedis) {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.width(dimensionResource(id = R.dimen.progress_indicator_width)),
-                        color = MaterialTheme.colorScheme.primary,
-                        trackColor = MaterialTheme.colorScheme.surfaceVariant
-                    )
-                }
+                JediCircularProgressIndicator(modifier)
             } else if (uiState.jedis.isNotEmpty()) {
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(items = uiState.jedis, key = { jedi -> jedi.id }) {
