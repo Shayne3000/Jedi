@@ -45,7 +45,9 @@ fun JediListScreen(
     viewModel: JediListViewModel,
     onNavigateToJediDetail: (Int, String) -> Unit
 ) {
-    // Read screen UI state from the business logic state holder i.e. ViewModel in a lifecycle-aware manner through the StateFlow and convert to Compose State.
+    // Start listening for and getting state updates from the UI logic state holder
+    // i.e. ViewModel in a lifecycle-aware manner through the uiState StateFlow
+    // and convert to Compose State.
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     JediListContent(
@@ -121,6 +123,7 @@ private fun JediListContent(
             if (uiState.isLoadingJedis) {
                 JediCircularProgressIndicator(modifier)
             } else if (uiState.jedis.isNotEmpty()) {
+                // TODO EmptyState for the isEmptyState?
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(items = uiState.jedis, key = { jedi -> jedi.id }) {
                         JediItem(jedi = it, onJediClicked = { jediId, jediName ->

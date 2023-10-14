@@ -47,6 +47,10 @@ fun JediDetailScreen(
 ) {
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    // TODO Consider taking the scaffold out of the content screen and putting it here so that it
+    //  doesn't recompose on state change as the menu should not change; only its content.
+    //  See TaskDetailScreen.kt in architecture samples for more.
+
     JediDetailContent(
         modifier = modifier,
         topBarTitle = topBarTitle,
@@ -54,6 +58,12 @@ fun JediDetailScreen(
         onErrorMessageShown = { viewModel.errorMessageShown() },
         onBackClicked = { onBackClicked() }
     )
+
+    // Like with AndroidViews, the DB lookup can be called before you start listening for (emitted) screen UI
+    // State updates as opposed to after as done here. Though a race happening between them might be of concern,
+    // the async call should be main safe and thus will not block the execution of the main thread so collect
+    // will be called before the async op returns.
+    viewModel.getJedi()
 }
 
 @Composable
@@ -65,7 +75,6 @@ private fun JediDetailContent(
     onBackClicked: () -> Unit = {}
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
-
     Scaffold(topBar = {
         TopAppBar(
             title = {

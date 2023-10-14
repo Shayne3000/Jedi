@@ -20,6 +20,9 @@ class JediListViewModel @Inject constructor(
     val uiState: StateFlow<JediListScreenUiState> = _uiState
 
     init {
+        // NB: This is simply for triaging purposes. Google does not recommend triggering asychronous operations as a side-effect of
+        // creating an instance as the asychronous op may return before it is fully initialized; a phenomena known as leaking the instance.
+        // See: https://developer.android.com/topic/architecture/ui-layer/state-production#stateflow_2 for more.
         loadJedis()
     }
 
