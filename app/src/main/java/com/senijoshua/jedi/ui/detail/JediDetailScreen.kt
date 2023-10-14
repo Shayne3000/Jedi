@@ -22,8 +22,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senijoshua.jedi.R
 import com.senijoshua.jedi.data.Jedi
@@ -41,6 +48,7 @@ fun JediDetailScreen(
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     JediDetailContent(
+        modifier = modifier,
         topBarTitle = topBarTitle,
         uiState = screenUiState,
         onErrorMessageShown = { viewModel.errorMessageShown() },
@@ -87,16 +95,99 @@ private fun JediDetailContent(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // TODO handle the various forms/implementations of the UI State
             when (uiState) {
                 is JediDetailScreenUiState.Loading -> {
                     JediCircularProgressIndicator(modifier)
                 }
 
                 is JediDetailScreenUiState.Success -> {
-                    // load Screen details
+                    val jedi = uiState.jedi
 
+                    ConstraintLayout(
+                        modifier = modifier
+                            .fillMaxSize()
+                    ) {
+                        val (gender, height, mass, hairColor, skinColor) = createRefs()
+                        val verticalPadding = dimensionResource(id = R.dimen.vertical_padding)
+                        val horizontalPadding = dimensionResource(id = R.dimen.horizontal_padding)
 
+                        val startGuideline = createGuidelineFromStart(horizontalPadding)
+
+                        Text(
+                            modifier = Modifier.constrainAs(gender) {
+                                top.linkTo(parent.top, margin = verticalPadding)
+                                start.linkTo(startGuideline)
+                            },
+                            text = getAnnotatedText(
+                                "${stringResource(id = R.string.gender)}: ",
+                                jedi.gender
+                            ),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        Text(
+                            modifier = Modifier.constrainAs(height) {
+                                top.linkTo(gender.bottom, margin = verticalPadding)
+                                start.linkTo(startGuideline)
+                            },
+                            text = getAnnotatedText(
+                                "${stringResource(id = R.string.height)}: ",
+                                jedi.height
+                            ),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        Text(
+                            modifier = Modifier.constrainAs(mass) {
+                                top.linkTo(height.bottom, margin = verticalPadding)
+                                start.linkTo(startGuideline)
+                            },
+                            text = getAnnotatedText(
+                                "${stringResource(id = R.string.mass)}: ",
+                                jedi.mass
+                            ),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        Text(
+                            modifier = Modifier.constrainAs(hairColor) {
+                                top.linkTo(mass.bottom, margin = verticalPadding)
+                                start.linkTo(startGuideline)
+                            },
+                            text = getAnnotatedText(
+                                "${stringResource(id = R.string.hair_color)}: ",
+                                jedi.hairColor
+                            ),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+
+                        Text(
+                            modifier = Modifier.constrainAs(skinColor) {
+                                top.linkTo(hairColor.bottom, margin = verticalPadding)
+                                start.linkTo(startGuideline)
+                            },
+                            text = getAnnotatedText(
+                                "${stringResource(id = R.string.skin_color)}: ",
+                                jedi.skinColor
+                            ),
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = MaterialTheme.colorScheme.onBackground,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
                 }
 
                 is JediDetailScreenUiState.Error -> {
@@ -112,16 +203,28 @@ private fun JediDetailContent(
     }
 }
 
+private fun getAnnotatedText(textToAnnotate: String, remainingText: String): AnnotatedString {
+    return buildAnnotatedString {
+        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+            append(textToAnnotate)
+        }
+        append(remainingText)
+    }
+}
+
 @JediPreview
 @Composable
 private fun JediDetailPreview() {
     val previewScreenUiState = JediDetailScreenUiState.Success(
         Jedi(
-            1, "Luke Skywalker", "male", "170cm", "81kg", "Brown", "Green"
+            1, "Luke Skywalker", "Male", "170cm", "81kg", "Brown", "Green"
         )
     )
 
     JediTheme {
-        JediDetailContent(topBarTitle = "Luke Skywalker", uiState = JediDetailScreenUiState.Error("test"))
+        JediDetailContent(
+            topBarTitle = "Luke Skywalker",
+            uiState = previewScreenUiState
+        )
     }
 }
