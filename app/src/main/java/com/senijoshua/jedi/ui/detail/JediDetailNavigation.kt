@@ -39,7 +39,8 @@ fun NavGraphBuilder.jediDetailScreen(
         arguments = listOf(navArgument(JEDI_DETAIL_NAME_ARG) { type = NavType.StringType })
     ) { backStackEntry ->
         val jediDetailViewModel = hiltViewModel<JediDetailViewModel>()
-        // Extract the jediName argument here since it is needed in the TopAppBar, but retrieve the jediId argument in the ViewModel.
+        // Extract the jediName argument here since it is needed in the TopAppBar,
+        // and also retrieve the jediId argument in the ViewModel as it is needed for the DB lookup.
         JediDetailScreen(
             topBarTitle = backStackEntry.arguments?.getString(JEDI_DETAIL_NAME_ARG)!!,
             viewModel = jediDetailViewModel,
