@@ -29,7 +29,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senijoshua.jedi.R
@@ -47,9 +46,9 @@ fun JediDetailScreen(
 ) {
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // TODO Consider taking the scaffold out of the content screen and putting it here so that it
-    //  doesn't recompose on state change as the menu should not change; only its content.
-    //  See TaskDetailScreen.kt in architecture samples for more.
+    // NB: The approach of putting the scaffold here works as shown in the Compose samples
+    // i.e. Todoapp/taskdetail works better when the ScreenUIState is a data class and not
+    // a sealed class/interface. The Latter is useful when within the high-level screen content composable.
 
     JediDetailContent(
         modifier = modifier,
@@ -60,7 +59,7 @@ fun JediDetailScreen(
     )
 
     // Like with AndroidViews, the DB lookup can be called before you start listening for (emitted) screen UI
-    // State updates as opposed to after as done here. Though a race happening between them might be of concern,
+    // State updates as opposed to doing so afterwards as done here. Though a race happening between them might be of concern,
     // the async call should be main safe and thus will not block the execution of the main thread so collect
     // will be called before the async op returns.
     viewModel.getJedi()
@@ -75,6 +74,7 @@ private fun JediDetailContent(
     onBackClicked: () -> Unit = {}
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
+
     Scaffold(topBar = {
         TopAppBar(
             title = {
@@ -127,8 +127,8 @@ private fun JediDetailContent(
                                 top.linkTo(parent.top, margin = verticalPadding)
                                 start.linkTo(startGuideline)
                             },
-                            text = getAnnotatedText(
-                                "${stringResource(id = R.string.gender)}: ",
+                            text = annotateText(
+                                stringResource(id = R.string.gender, jedi.gender),
                                 jedi.gender
                             ),
                             style = MaterialTheme.typography.bodyLarge,
@@ -142,8 +142,8 @@ private fun JediDetailContent(
                                 top.linkTo(gender.bottom, margin = verticalPadding)
                                 start.linkTo(startGuideline)
                             },
-                            text = getAnnotatedText(
-                                "${stringResource(id = R.string.height)}: ",
+                            text = annotateText(
+                                stringResource(id = R.string.height, jedi.height),
                                 jedi.height
                             ),
                             style = MaterialTheme.typography.bodyLarge,
@@ -157,8 +157,8 @@ private fun JediDetailContent(
                                 top.linkTo(height.bottom, margin = verticalPadding)
                                 start.linkTo(startGuideline)
                             },
-                            text = getAnnotatedText(
-                                "${stringResource(id = R.string.mass)}: ",
+                            text = annotateText(
+                                stringResource(id = R.string.mass, jedi.mass),
                                 jedi.mass
                             ),
                             style = MaterialTheme.typography.bodyLarge,
@@ -172,8 +172,8 @@ private fun JediDetailContent(
                                 top.linkTo(mass.bottom, margin = verticalPadding)
                                 start.linkTo(startGuideline)
                             },
-                            text = getAnnotatedText(
-                                "${stringResource(id = R.string.hair_color)}: ",
+                            text = annotateText(
+                                stringResource(id = R.string.hair_color, jedi.hairColor),
                                 jedi.hairColor
                             ),
                             style = MaterialTheme.typography.bodyLarge,
@@ -187,8 +187,8 @@ private fun JediDetailContent(
                                 top.linkTo(hairColor.bottom, margin = verticalPadding)
                                 start.linkTo(startGuideline)
                             },
-                            text = getAnnotatedText(
-                                "${stringResource(id = R.string.skin_color)}: ",
+                            text = annotateText(
+                                stringResource(id = R.string.skin_color, jedi.skinColor),
                                 jedi.skinColor
                             ),
                             style = MaterialTheme.typography.bodyLarge,
@@ -212,12 +212,12 @@ private fun JediDetailContent(
     }
 }
 
-private fun getAnnotatedText(textToAnnotate: String, remainingText: String): AnnotatedString {
+private fun annotateText(textToAnnotate: String, textToNotAnnotate: String): AnnotatedString {
+    val endIndex = textToAnnotate.indexOf(textToNotAnnotate) - 1
+
     return buildAnnotatedString {
-        withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-            append(textToAnnotate)
-        }
-        append(remainingText)
+        append(textToAnnotate)
+        addStyle(style = SpanStyle(fontWeight = FontWeight.Bold), start = 0, end = endIndex)
     }
 }
 
