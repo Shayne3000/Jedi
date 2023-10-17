@@ -45,9 +45,9 @@ fun JediListScreen(
     viewModel: JediListViewModel,
     onNavigateToJediDetail: (Int, String) -> Unit
 ) {
-    // Start listening for and getting state updates from the UI logic state holder
-    // i.e. ViewModel in a lifecycle-aware manner through the uiState StateFlow
-    // and convert to Compose State.
+    // Start listening for and getting emitted values i.e. state updates from the
+    // UI logic state holder i.e. ViewModel in a lifecycle-aware manner through
+    // the uiState StateFlow and convert to Compose State.
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     JediListContent(

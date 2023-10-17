@@ -17,13 +17,13 @@ fun JediApp(
 ) {
     val navController = appState.navController
     NavHost(navController = navController, startDestination = JediListRoute) {
-        // the nested graphs representing each destination in the NavHost
+        // nested nav graphs representing each destination/screen in the NavHost
         jediListScreen { jediId, jediName ->
             // Handle event to navigate to the Jedi Detail screen.
             // This pattern also works for cross-module navigation through the app module.
             navController.navigateToDetailScreen(jediId, jediName)
         }
-        jediDetailScreen() {
+        jediDetailScreen {
             navController.popBackStack()
         }
     }
