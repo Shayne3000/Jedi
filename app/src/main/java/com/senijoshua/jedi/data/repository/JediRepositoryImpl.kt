@@ -1,7 +1,12 @@
-package com.senijoshua.jedi.data
+package com.senijoshua.jedi.data.repository
 
 import com.senijoshua.jedi.data.local.JediDao
+import com.senijoshua.jedi.data.model.Jedi
+import com.senijoshua.jedi.data.model.toExternalModel
+import com.senijoshua.jedi.data.model.toLocal
 import com.senijoshua.jedi.data.remote.JediApi
+import com.senijoshua.jedi.data.util.Result
+import com.senijoshua.jedi.data.util.asResult
 import com.senijoshua.jedi.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

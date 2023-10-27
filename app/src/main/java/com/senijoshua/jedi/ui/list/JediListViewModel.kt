@@ -2,9 +2,9 @@ package com.senijoshua.jedi.ui.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.senijoshua.jedi.data.Jedi
-import com.senijoshua.jedi.data.JediRepository
-import com.senijoshua.jedi.data.Result
+import com.senijoshua.jedi.data.model.Jedi
+import com.senijoshua.jedi.data.repository.JediRepository
+import com.senijoshua.jedi.data.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,12 +23,10 @@ class JediListViewModel @Inject constructor(
         // NB: This is simply for triaging purposes. Google does not recommend triggering asychronous operations as a side-effect of
         // creating an instance as the asychronous op may return before it is fully initialized; a phenomena known as leaking the instance.
         // See: https://developer.android.com/topic/architecture/ui-layer/state-production#stateflow_2 for more.
-        loadJedis()
+        // loadJedis()
     }
 
-    private fun loadJedis() {
-        _uiState.update { currentUiState -> currentUiState.copy(isLoadingJedis = true) }
-
+    fun loadJedis() {
         viewModelScope.launch {
             jediRepository.getJedis().collect { result ->
                 when (result) {
@@ -65,7 +63,7 @@ class JediListViewModel @Inject constructor(
  * Data model representing the UI state of the JediListScreen at any instant in time.
  */
 data class JediListScreenUiState(
-    val isLoadingJedis: Boolean = false,
+    val isLoadingJedis: Boolean = true,
     val errorMessage: String? = null,
     val jedis: List<Jedi> = emptyList()
 )

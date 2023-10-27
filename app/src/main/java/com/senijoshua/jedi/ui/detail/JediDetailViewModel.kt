@@ -3,9 +3,9 @@ package com.senijoshua.jedi.ui.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.senijoshua.jedi.data.Jedi
-import com.senijoshua.jedi.data.JediRepository
-import com.senijoshua.jedi.data.Result
+import com.senijoshua.jedi.data.model.Jedi
+import com.senijoshua.jedi.data.repository.JediRepository
+import com.senijoshua.jedi.data.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -30,7 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senijoshua.jedi.R
-import com.senijoshua.jedi.data.Jedi
+import com.senijoshua.jedi.data.model.Jedi
+import com.senijoshua.jedi.data.model.fakeJediList
 import com.senijoshua.jedi.ui.components.JediCircularProgressIndicator
 import com.senijoshua.jedi.ui.theme.JediTheme
 import com.senijoshua.jedi.ui.util.JediPreview
@@ -60,6 +61,8 @@ fun JediListScreen(
             viewModel.errorMessageShown()
         }
     )
+
+    viewModel.loadJedis()
 }
 
 @Composable
@@ -183,6 +186,10 @@ private fun JediItem(
         }
     }
 }
+
+private val jediListPreviewUiState = JediListScreenUiState(
+    jedis = fakeJediList
+)
 
 @JediPreview
 @Composable

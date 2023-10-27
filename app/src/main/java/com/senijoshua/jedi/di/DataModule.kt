@@ -1,7 +1,7 @@
 package com.senijoshua.jedi.di
 
-import com.senijoshua.jedi.data.JediRepository
-import com.senijoshua.jedi.data.JediRepositoryImpl
+import com.senijoshua.jedi.data.repository.JediRepository
+import com.senijoshua.jedi.data.repository.JediRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

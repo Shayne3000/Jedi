@@ -1,4 +1,4 @@
-package com.senijoshua.jedi.data
+package com.senijoshua.jedi.data.model
 
 import com.senijoshua.jedi.data.local.JediEntity
 import com.senijoshua.jedi.data.remote.NetworkJedi

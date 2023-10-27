@@ -1,11 +1,9 @@
-package com.senijoshua.jedi.ui.list
-
-import com.senijoshua.jedi.data.Jedi
+package com.senijoshua.jedi.data.model
 
 val fakeJediList = List(10) { index ->
     Jedi(
-        index, 
-        "Jedi $index", 
+        index,
+        "Jedi $index",
         "Jedi $index gender",
         "Jedi $index height",
         "Jedi $index mass",
@@ -13,7 +11,3 @@ val fakeJediList = List(10) { index ->
         "Jedi $index skinColor"
     )
 }
-
-val jediListPreviewUiState = JediListScreenUiState(
-    jedis = fakeJediList
-)
