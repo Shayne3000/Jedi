@@ -45,7 +45,7 @@ fun JediListScreen(
     viewModel: JediListViewModel,
     onNavigateToJediDetail: (Int, String) -> Unit
 ) {
-    // Start listening for and getting emitted values i.e. state updates from the
+    // Start listening for and getting emitted state values i.e. state updates from the
     // UI logic state holder i.e. ViewModel in a lifecycle-aware manner through
     // the uiState StateFlow and convert to Compose State.
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -60,22 +60,21 @@ fun JediListScreen(
             viewModel.errorMessageShown()
         }
     )
-
 }
 
 @Composable
 private fun JediListContent(
     modifier: Modifier = Modifier,
     uiState: JediListScreenUiState,
-    onNavigateToJediDetail: (Int, String) -> Unit = { _, _ ->  },
+    onNavigateToJediDetail: (Int, String) -> Unit = { _, _ -> },
     onErrorMessageShown: () -> Unit = {}
 ) {
     // Hoist the (snack bar host) state outside the Scaffold and store it in the composition.
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = remember { SnackbarHostState() }
 
     uiState.errorMessage?.let { message ->
-        LaunchedEffect(snackbarHostState) {
-            snackbarHostState.showSnackbar(message = message)
+        LaunchedEffect(snackBarHostState) {
+            snackBarHostState.showSnackbar(message = message)
             onErrorMessageShown()
         }
     }
@@ -96,7 +95,7 @@ private fun JediListContent(
                 )
             )
         },
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
     ) { paddingValues ->
         Column(
             modifier = modifier
@@ -123,7 +122,6 @@ private fun JediListContent(
             if (uiState.isLoadingJedis) {
                 JediCircularProgressIndicator(modifier)
             } else if (uiState.jedis.isNotEmpty()) {
-                // TODO EmptyState for the isEmptyState?
                 LazyColumn(modifier = Modifier.fillMaxSize()) {
                     items(items = uiState.jedis, key = { jedi -> jedi.id }) {
                         JediItem(jedi = it, onJediClicked = { jediId, jediName ->
@@ -140,7 +138,7 @@ private fun JediListContent(
 private fun JediItem(
     modifier: Modifier = Modifier,
     jedi: Jedi,
-    onJediClicked: (Int, String) -> Unit = { _, _ ->  }
+    onJediClicked: (Int, String) -> Unit = { _, _ -> }
 ) {
     ElevatedCard(
         modifier = modifier

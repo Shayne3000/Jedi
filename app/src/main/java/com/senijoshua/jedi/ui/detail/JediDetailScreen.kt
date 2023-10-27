@@ -46,9 +46,9 @@ fun JediDetailScreen(
 ) {
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // NB: The approach of putting the scaffold here works as shown in the Compose samples
+    // NB: The approach of putting the scaffold here as shown in the Compose samples
     // i.e. Todoapp/taskdetail works better when the ScreenUIState is a data class and not
-    // a sealed class/interface. The Latter is useful when within the high-level screen content composable.
+    // a sealed class/interface. The Latter is useful when within the screen content composable.
 
     JediDetailContent(
         modifier = modifier,
