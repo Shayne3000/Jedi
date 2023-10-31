@@ -25,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,6 +36,9 @@ import com.senijoshua.jedi.data.model.fakeJediList
 import com.senijoshua.jedi.ui.components.JediCircularProgressIndicator
 import com.senijoshua.jedi.ui.theme.JediTheme
 import com.senijoshua.jedi.ui.util.JediPreview
+
+const val JEDI_ITEM_CARD_TEST_TAG = "JediItemElevatedCard"
+const val JEDI_ITEM_COLUMN_IN_CARD_TEST_TAG = "JediItemColumnInCard"
 
 /**
  * Screen for the Jedi List that exposes an event to navigate to the detail screen
@@ -66,7 +70,7 @@ fun JediListScreen(
 }
 
 @Composable
-private fun JediListContent(
+fun JediListContent(
     modifier: Modifier = Modifier,
     uiState: JediListScreenUiState,
     onNavigateToJediDetail: (Int, String) -> Unit = { _, _ -> },
@@ -138,7 +142,7 @@ private fun JediListContent(
 }
 
 @Composable
-private fun JediItem(
+fun JediItem(
     modifier: Modifier = Modifier,
     jedi: Jedi,
     onJediClicked: (Int, String) -> Unit = { _, _ -> }
@@ -150,13 +154,17 @@ private fun JediItem(
                 horizontal = dimensionResource(id = R.dimen.horizontal_padding)
             )
             .height(dimensionResource(id = R.dimen.list_item_height))
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .testTag(JEDI_ITEM_CARD_TEST_TAG)
+        ,
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(id = R.dimen.card_elevation)),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier
             .fillMaxSize()
-            .clickable { onJediClicked(jedi.id, jedi.name) }) {
+            .clickable { onJediClicked(jedi.id, jedi.name) }
+            .testTag(JEDI_ITEM_COLUMN_IN_CARD_TEST_TAG)
+        ) {
             Text(
                 modifier = Modifier.padding(
                     top = dimensionResource(id = R.dimen.list_item_vertical_padding),

@@ -141,7 +141,6 @@ dependencies {
     // Local Test Dependencies
     testImplementation("androidx.room:room-testing:$roomVersion")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("com.squareup.okhttp3:mockwebserver")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
     // Instrumented Test dependencies
     androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
