@@ -24,6 +24,7 @@ class JediItemTest {
 
     @Before
     fun setUp() {
+        // content under test
         composeTestRule.setContent {
             JediTheme {
                 JediItem(jedi = testJedi)

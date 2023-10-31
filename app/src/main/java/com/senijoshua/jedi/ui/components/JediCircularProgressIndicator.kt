@@ -9,10 +9,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import com.senijoshua.jedi.R
 import com.senijoshua.jedi.ui.theme.JediTheme
 import com.senijoshua.jedi.ui.util.JediPreview
+
+const val JEDI_PROGRESS_TAG: String = "JediCircularProgress"
 
 @Composable
 fun JediCircularProgressIndicator(modifier: Modifier = Modifier) {
@@ -22,7 +25,7 @@ fun JediCircularProgressIndicator(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CircularProgressIndicator(
-            modifier = Modifier.width(dimensionResource(id = R.dimen.progress_indicator_width)),
+            modifier = Modifier.testTag(JEDI_PROGRESS_TAG).width(dimensionResource(id = R.dimen.progress_indicator_width)),
             color = MaterialTheme.colorScheme.primary,
             trackColor = MaterialTheme.colorScheme.surfaceVariant
         )

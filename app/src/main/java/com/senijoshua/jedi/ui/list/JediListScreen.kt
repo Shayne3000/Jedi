@@ -39,6 +39,7 @@ import com.senijoshua.jedi.ui.util.JediPreview
 
 const val JEDI_ITEM_CARD_TEST_TAG = "JediItemElevatedCard"
 const val JEDI_ITEM_COLUMN_IN_CARD_TEST_TAG = "JediItemColumnInCard"
+const val JEDI_LIST_TAG = "JediListTag"
 
 /**
  * Screen for the Jedi List that exposes an event to navigate to the detail screen
@@ -48,7 +49,7 @@ const val JEDI_ITEM_COLUMN_IN_CARD_TEST_TAG = "JediItemColumnInCard"
 fun JediListScreen(
     modifier: Modifier = Modifier,
     viewModel: JediListViewModel,
-    onNavigateToJediDetail: (Int, String) -> Unit
+    onNavigateToJediDetail: (Int, String) -> Unit = {_, _ -> }
 ) {
     // Start listening for and getting emitted state values i.e. state updates from the
     // UI logic state holder i.e. ViewModel in a lifecycle-aware manner through
@@ -129,7 +130,7 @@ fun JediListContent(
             if (uiState.isLoadingJedis) {
                 JediCircularProgressIndicator(modifier)
             } else if (uiState.jedis.isNotEmpty()) {
-                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(modifier = Modifier.fillMaxSize().testTag(JEDI_LIST_TAG)) {
                     items(items = uiState.jedis, key = { jedi -> jedi.id }) {
                         JediItem(jedi = it, onJediClicked = { jediId, jediName ->
                             onNavigateToJediDetail(jediId, jediName)
