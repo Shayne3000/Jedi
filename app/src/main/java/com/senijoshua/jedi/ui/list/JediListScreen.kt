@@ -37,8 +37,8 @@ import com.senijoshua.jedi.ui.components.JediCircularProgressIndicator
 import com.senijoshua.jedi.ui.theme.JediTheme
 import com.senijoshua.jedi.ui.util.JediPreview
 
-const val JEDI_ITEM_CARD_TEST_TAG = "JediItemElevatedCard"
-const val JEDI_ITEM_COLUMN_IN_CARD_TEST_TAG = "JediItemColumnInCard"
+const val JEDI_ITEM_CARD_TAG = "JediItemElevatedCard"
+const val JEDI_ITEM_COLUMN_IN_CARD_TAG = "JediItemColumnInCard"
 const val JEDI_LIST_TAG = "JediListTag"
 
 /**
@@ -156,7 +156,7 @@ fun JediItem(
             )
             .height(dimensionResource(id = R.dimen.list_item_height))
             .fillMaxWidth()
-            .testTag(JEDI_ITEM_CARD_TEST_TAG)
+            .testTag(JEDI_ITEM_CARD_TAG)
         ,
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(id = R.dimen.card_elevation)),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
@@ -164,7 +164,7 @@ fun JediItem(
         Column(modifier = Modifier
             .fillMaxSize()
             .clickable { onJediClicked(jedi.id, jedi.name) }
-            .testTag(JEDI_ITEM_COLUMN_IN_CARD_TEST_TAG)
+            .testTag(JEDI_ITEM_COLUMN_IN_CARD_TAG)
         ) {
             Text(
                 modifier = Modifier.padding(

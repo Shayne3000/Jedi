@@ -1,4 +1,4 @@
-package com.senijoshua.jedi.ui
+package com.senijoshua.jedi.util
 
 import android.app.Application
 import android.content.Context

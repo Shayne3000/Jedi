@@ -1,4 +1,4 @@
-package com.senijoshua.jedi.ui
+package com.senijoshua.jedi.util
 
 import com.senijoshua.jedi.data.repository.FakeJediRepositoryImpl
 import com.senijoshua.jedi.data.repository.JediRepository

@@ -22,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -36,6 +37,8 @@ import com.senijoshua.jedi.data.model.Jedi
 import com.senijoshua.jedi.ui.components.JediCircularProgressIndicator
 import com.senijoshua.jedi.ui.theme.JediTheme
 import com.senijoshua.jedi.ui.util.JediPreview
+
+const val CONSTRAINT_LAYOUT_TAG = "constraintLayoutContainer"
 
 @Composable
 fun JediDetailScreen(
@@ -114,7 +117,7 @@ private fun JediDetailContent(
 
                     ConstraintLayout(
                         modifier = modifier
-                            .fillMaxSize()
+                            .fillMaxSize().testTag(CONSTRAINT_LAYOUT_TAG)
                     ) {
                         val (gender, height, mass, hairColor, skinColor) = createRefs()
                         val verticalPadding = dimensionResource(id = R.dimen.vertical_padding)
@@ -126,7 +129,7 @@ private fun JediDetailContent(
                             modifier = Modifier.constrainAs(gender) {
                                 top.linkTo(parent.top, margin = verticalPadding)
                                 start.linkTo(startGuideline)
-                            },
+                            }.testTag(jedi.gender),
                             text = annotateText(
                                 stringResource(id = R.string.gender, jedi.gender),
                                 jedi.gender
@@ -141,7 +144,7 @@ private fun JediDetailContent(
                             modifier = Modifier.constrainAs(height) {
                                 top.linkTo(gender.bottom, margin = verticalPadding)
                                 start.linkTo(startGuideline)
-                            },
+                            }.testTag(jedi.height),
                             text = annotateText(
                                 stringResource(id = R.string.height, jedi.height),
                                 jedi.height
@@ -156,7 +159,7 @@ private fun JediDetailContent(
                             modifier = Modifier.constrainAs(mass) {
                                 top.linkTo(height.bottom, margin = verticalPadding)
                                 start.linkTo(startGuideline)
-                            },
+                            }.testTag(jedi.mass),
                             text = annotateText(
                                 stringResource(id = R.string.mass, jedi.mass),
                                 jedi.mass
@@ -171,7 +174,7 @@ private fun JediDetailContent(
                             modifier = Modifier.constrainAs(hairColor) {
                                 top.linkTo(mass.bottom, margin = verticalPadding)
                                 start.linkTo(startGuideline)
-                            },
+                            }.testTag(jedi.hairColor),
                             text = annotateText(
                                 stringResource(id = R.string.hair_color, jedi.hairColor),
                                 jedi.hairColor
@@ -186,7 +189,7 @@ private fun JediDetailContent(
                             modifier = Modifier.constrainAs(skinColor) {
                                 top.linkTo(hairColor.bottom, margin = verticalPadding)
                                 start.linkTo(startGuideline)
-                            },
+                            }.testTag(jedi.skinColor),
                             text = annotateText(
                                 stringResource(id = R.string.skin_color, jedi.skinColor),
                                 jedi.skinColor
@@ -212,7 +215,7 @@ private fun JediDetailContent(
     }
 }
 
-private fun annotateText(textToAnnotate: String, textToNotAnnotate: String): AnnotatedString {
+fun annotateText(textToAnnotate: String, textToNotAnnotate: String): AnnotatedString {
     val endIndex = textToAnnotate.indexOf(textToNotAnnotate) - 1
 
     return buildAnnotatedString {

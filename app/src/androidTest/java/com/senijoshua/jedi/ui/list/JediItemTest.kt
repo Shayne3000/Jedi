@@ -34,9 +34,9 @@ class JediItemTest {
 
     @Test
     fun jediItem_showsData_onJediModelInjection() {
-        composeTestRule.onNodeWithTag(JEDI_ITEM_CARD_TEST_TAG).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(JEDI_ITEM_CARD_TAG).assertIsDisplayed()
 
-        composeTestRule.onNodeWithTag(JEDI_ITEM_COLUMN_IN_CARD_TEST_TAG).assertIsDisplayed().assertHasClickAction()
+        composeTestRule.onNodeWithTag(JEDI_ITEM_COLUMN_IN_CARD_TAG).assertIsDisplayed().assertHasClickAction()
 
         composeTestRule.onNodeWithText(testJedi.name).assertIsDisplayed()
 

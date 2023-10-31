@@ -28,9 +28,6 @@ class JediListContentTest {
     // set up any dependencies like string resources used in the content
     private lateinit var jediListTitle: String
     private lateinit var jediMasters: String
-    /*
-        Add an end-to-end test for the flow of loading jedi lists and clicking an item to view its detail.
-     */
 
     @Before
     fun setUp() {
