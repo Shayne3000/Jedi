@@ -33,8 +33,8 @@ class JediDetailViewModelTest {
     @Test
     fun `Given a passed-in id of a jedi, getJedi returns the correct jedi model on success`() =
         runTest {
-            // Set the Main dispatcher to a test dispatcher that not
-            // run the coroutines immediately but queue them on the scheduler
+            // Set the Main dispatcher to a test dispatcher that does not
+            // run coroutines immediately but queues them on the scheduler
             // for this test case alone.
             Dispatchers.setMain(StandardTestDispatcher())
 

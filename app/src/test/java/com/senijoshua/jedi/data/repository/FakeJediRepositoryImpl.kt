@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 /**
- * A mock/fake implementation of the Jedi Repository with hard coded data for
+ * A mock/fake implementation of [JediRepository] with hard coded data for
  * testing.
  */
 class FakeJediRepositoryImpl : JediRepository {

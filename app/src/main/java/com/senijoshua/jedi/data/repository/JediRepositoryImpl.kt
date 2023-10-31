@@ -24,15 +24,18 @@ import javax.inject.Inject
  * This facilitates an offline-first paradigm by employing the DB as
  * the single source of truth for getting a list of Jedis.
  *
+ * NB: Data source classes aren't explicitly used as that would just be unnecessary bloat at this
+ * scale.
  */
 class JediRepositoryImpl @Inject constructor(
     private val apiService: JediApi,
     private val db: JediDao,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) : JediRepository {
+
     /**
      * An observable stream of jedis is returned from the DB which allows us to be
-     * notified of any updates to the Jedi table in the DB and retrieves fresh data from the
+     * notified of any changes/updates to the Jedi table in the DB and retrieves fresh data from the
      * network if the table is empty.
      */
     override suspend fun getJedis(): Flow<Result<List<Jedi>>> {

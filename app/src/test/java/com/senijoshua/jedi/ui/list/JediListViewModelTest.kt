@@ -15,7 +15,7 @@ import org.junit.Test
 @ExperimentalCoroutinesApi
 class JediListViewModelTest {
 
-    // Setup a rule to replace the main dispatcher with a TestDispatcher for all test cases so that
+    // Setup a test rule to replace the main dispatcher with a TestDispatcher for all test cases so that
     // an exception does not occur
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -44,6 +44,7 @@ class JediListViewModelTest {
         vm.loadJedis()
 
         assertTrue(vm.uiState.value.jedis.isNotEmpty())
+        assertEquals("Jedi 0 gender", vm.uiState.value.jedis[0].gender)
         assertNull(vm.uiState.value.errorMessage)
         assertFalse(vm.uiState.value.isLoadingJedis)
     }
@@ -54,7 +55,7 @@ class JediListViewModelTest {
 
         vm.loadJedis()
 
-        assertEquals("error", vm.uiState.value.errorMessage!!)
+        assertEquals("error", vm.uiState.value.errorMessage)
         assertTrue(vm.uiState.value.jedis.isEmpty())
         assertFalse(vm.uiState.value.isLoadingJedis)
 
