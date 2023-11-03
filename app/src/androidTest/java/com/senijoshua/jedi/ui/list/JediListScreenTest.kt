@@ -6,6 +6,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import com.senijoshua.jedi.data.model.fakeJediList
+import com.senijoshua.jedi.data.repository.FakeJediRepositoryImpl
 import com.senijoshua.jedi.data.repository.JediRepository
 import com.senijoshua.jedi.ui.MainActivity
 import com.senijoshua.jedi.ui.components.JEDI_PROGRESS_TAG
@@ -23,39 +24,38 @@ import javax.inject.Inject
  */
 @HiltAndroidTest
 class JediListScreenTest {
-    // Setup test rules
+    // Setup hilt rule to manage component's state
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
+    // Setup Compose test rule for the Main activity
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-    // Setup any dependencies for injection and access any needed resources
+    // Setup any dependencies for injection
+
+    // NB: Ideally, there's no need to inject this with Hilt as we can use
+    // the FakeJediRepositoryImpl implementation of JediRepository directly
+    // as done in the JediDetailScreenTest but we follow this paradigm here
+    // for demonstration purposes.
     @Inject
     lateinit var repository: JediRepository
 
-    // Setup content under test
     @Before
     fun setUp() {
+        // inject repository with the FakeJediRepositoryImpl implementation here.
         hiltRule.inject()
-
-        // NB: Call setContent on the specific activity of the rule directly as opposed
-        // to doing so on the rule (i.e. composeTestRule.setContent) else an IllegalStateException
-        // will be thrown since the activity calls setContent before the rule does.
-        composeTestRule.activity.setContent {
-            JediTheme {
-                JediListScreen(viewModel = JediListViewModel(repository))
-            }
-        }
     }
 
     @Test
     fun jediListScreen_showsJediList_onStartupAndLoadSuccess() {
+        setContent(repository)
+
         composeTestRule.onNodeWithTag(JEDI_LIST_TAG).assertIsDisplayed()
         composeTestRule.onNodeWithText("error").assertDoesNotExist()
         composeTestRule.onNodeWithTag(JEDI_PROGRESS_TAG).assertDoesNotExist()
 
-        // NB: Cannot test if all items in the list exist as LazyColumn doesn't
+        // NB: Cannot test whether all items in the list exist as LazyColumn doesn't
         // load all items at once. It loads items when they are about to be on screen.
         // If they aren't visible yet, it doesn't load it.
 
@@ -63,5 +63,32 @@ class JediListScreenTest {
         // screen varies depending on the size of the screen in which the app is executed.
         composeTestRule.onNodeWithText(fakeJediList[0].name).assertExists()
         composeTestRule.onNodeWithText(fakeJediList[1].name).assertExists()
+    }
+
+    @Test
+    fun jediListScreen_showErrorSnackBar_onLoadFailure() {
+        // get the injected repository implementation which is FakeJediRepositoryImpl
+        // under the hood and cast it to the same class to modify its behaviour
+        // before manual injection into the JediListViewModel.
+        val fakeRepository = (repository as FakeJediRepositoryImpl)
+
+        fakeRepository.shouldThrowError = true
+
+        // start the screen in the activity
+        setContent(fakeRepository)
+
+        composeTestRule.onNodeWithTag(JEDI_LIST_TAG).assertDoesNotExist()
+        composeTestRule.onNodeWithText("error").assertIsDisplayed()
+    }
+
+    private fun setContent(repository: JediRepository) {
+        // NB: Call setContent on the activity of the rule directly as opposed to doing
+        // so on the rule (i.e. composeTestRule.setContent) else an IllegalStateException
+        // will be thrown since the activity will call setContent before the rule does.
+        composeTestRule.activity.setContent {
+            JediTheme {
+                JediListScreen(viewModel = JediListViewModel(repository))
+            }
+        }
     }
 }
