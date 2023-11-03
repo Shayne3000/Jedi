@@ -27,7 +27,7 @@ import org.junit.Test
  * loading up a list of Jedis, clicking on one of them, going to the detail screen
  * to view the details of said Jedi and then returning to the previous screen.
  *
- * NB: User flow tests doubles as navigation tests too.
+ * NB: User flow tests can double as navigation tests too.
  */
 @HiltAndroidTest
 class JediAppTest {

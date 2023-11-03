@@ -37,7 +37,7 @@ class JediDetailScreenTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-    // Setup dependencies and any string resources
+    // Setup dependencies and any needed resources
     private lateinit var jediRepository: FakeJediRepositoryImpl
 
     private lateinit var backIcon: String
