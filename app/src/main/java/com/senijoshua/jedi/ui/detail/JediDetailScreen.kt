@@ -44,8 +44,8 @@ const val CONSTRAINT_LAYOUT_TAG = "constraintLayoutContainer"
 fun JediDetailScreen(
     modifier: Modifier = Modifier,
     viewModel: JediDetailViewModel,
-    topBarTitle: String,
-    onBackClicked: () -> Unit
+    topBarTitle: String = "",
+    onBackClicked: () -> Unit = {}
 ) {
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -69,7 +69,7 @@ fun JediDetailScreen(
 }
 
 @Composable
-private fun JediDetailContent(
+fun JediDetailContent(
     modifier: Modifier = Modifier,
     topBarTitle: String = "",
     uiState: JediDetailScreenUiState,

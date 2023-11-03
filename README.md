@@ -5,6 +5,7 @@ Jedi is an app written in Kotlin that triages the use of:
 - Room for persistence, 
 - Retrofit for networking,
 - Moshi for JSON parsing,
+- Hilt for dependency injection,
 - Coroutines for asynchronous execution, 
 - Flow for observable data streams,
 - and some other Jetpack components

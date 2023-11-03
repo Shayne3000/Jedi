@@ -18,7 +18,7 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Instrumented test for the JediListScreen content.
+ * Instrumented UI test for the JediListScreen content.
  */
 class JediListContentTest {
     // set compose rule
