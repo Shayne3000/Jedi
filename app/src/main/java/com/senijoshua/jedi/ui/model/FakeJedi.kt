@@ -1,4 +1,4 @@
-package com.senijoshua.jedi.data.model
+package com.senijoshua.jedi.ui.model
 
 val fakeJediList = List(10) { index ->
     Jedi(

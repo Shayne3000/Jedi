@@ -1,7 +1,8 @@
-package com.senijoshua.jedi.data.model
+package com.senijoshua.jedi.data.mapper
 
 import com.senijoshua.jedi.data.local.JediEntity
 import com.senijoshua.jedi.data.remote.NetworkJedi
+import com.senijoshua.jedi.ui.model.Jedi
 
 /**
  * Extension functions for converting data models to types relevant for the architectural

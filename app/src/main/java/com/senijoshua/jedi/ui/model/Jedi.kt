@@ -1,4 +1,4 @@
-package com.senijoshua.jedi.data.model
+package com.senijoshua.jedi.ui.model
 
 /**
  * Data type for use in higher layers of

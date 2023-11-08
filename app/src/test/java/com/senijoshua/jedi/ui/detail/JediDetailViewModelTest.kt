@@ -1,7 +1,7 @@
 package com.senijoshua.jedi.ui.detail
 
 import androidx.lifecycle.SavedStateHandle
-import com.senijoshua.jedi.data.model.fakeJediList
+import com.senijoshua.jedi.ui.model.fakeJediList
 import com.senijoshua.jedi.data.repository.FakeJediRepositoryImpl
 import com.senijoshua.jedi.util.MainDispatcherRule
 import kotlinx.coroutines.Dispatchers

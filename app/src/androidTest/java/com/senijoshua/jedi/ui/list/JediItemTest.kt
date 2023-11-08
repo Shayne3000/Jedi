@@ -6,7 +6,7 @@ import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
-import com.senijoshua.jedi.data.model.fakeJediList
+import com.senijoshua.jedi.ui.model.fakeJediList
 import com.senijoshua.jedi.ui.theme.JediTheme
 import org.junit.Before
 import org.junit.Rule

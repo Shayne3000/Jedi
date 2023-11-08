@@ -1,7 +1,7 @@
 package com.senijoshua.jedi.data.repository
 
-import com.senijoshua.jedi.data.model.Jedi
-import com.senijoshua.jedi.data.model.fakeJediList
+import com.senijoshua.jedi.ui.model.Jedi
+import com.senijoshua.jedi.ui.model.fakeJediList
 import com.senijoshua.jedi.data.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
