@@ -2,7 +2,7 @@ package com.senijoshua.jedi.ui.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.senijoshua.jedi.ui.model.Jedi
+import com.senijoshua.jedi.data.model.Jedi
 import com.senijoshua.jedi.data.repository.JediRepository
 import com.senijoshua.jedi.data.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel

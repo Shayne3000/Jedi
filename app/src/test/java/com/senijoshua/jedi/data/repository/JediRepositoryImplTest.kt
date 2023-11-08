@@ -1,8 +1,8 @@
 package com.senijoshua.jedi.data.repository
 
 import com.senijoshua.jedi.data.local.FakeJediDao
-import com.senijoshua.jedi.ui.model.fakeJediList
-import com.senijoshua.jedi.data.mapper.toLocal
+import com.senijoshua.jedi.data.model.fakeJediList
+import com.senijoshua.jedi.data.model.toLocal
 import com.senijoshua.jedi.data.remote.FakeApi
 import com.senijoshua.jedi.data.util.Result
 import kotlinx.coroutines.ExperimentalCoroutinesApi
