@@ -7,7 +7,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import com.senijoshua.jedi.R
 import com.senijoshua.jedi.data.model.fakeJediList
-import com.senijoshua.jedi.data.repository.FakeJediRepositoryImpl
+import com.senijoshua.jedi.data.repository.FakeJediRepository
 import com.senijoshua.jedi.data.repository.JediRepository
 import com.senijoshua.jedi.ui.MainActivity
 import com.senijoshua.jedi.ui.components.JEDI_PROGRESS_TAG
@@ -77,7 +77,7 @@ class JediListScreenTest {
         // get the injected repository implementation which is FakeJediRepositoryImpl
         // under the hood and cast it to the same class to modify its behaviour
         // before manual injection into the JediListViewModel.
-        val fakeRepository = (repository as FakeJediRepositoryImpl)
+        val fakeRepository = (repository as FakeJediRepository)
 
         fakeRepository.shouldThrowError = true
 

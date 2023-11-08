@@ -2,7 +2,7 @@ package com.senijoshua.jedi.ui.detail
 
 import androidx.lifecycle.SavedStateHandle
 import com.senijoshua.jedi.data.model.fakeJediList
-import com.senijoshua.jedi.data.repository.FakeJediRepositoryImpl
+import com.senijoshua.jedi.data.repository.FakeJediRepository
 import com.senijoshua.jedi.util.MainDispatcherRule
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -20,13 +20,13 @@ class JediDetailViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private lateinit var repo: FakeJediRepositoryImpl
+    private lateinit var repo: FakeJediRepository
 
     private lateinit var vm: JediDetailViewModel
 
     @Before
     fun setUp() {
-        repo = FakeJediRepositoryImpl()
+        repo = FakeJediRepository()
         vm = JediDetailViewModel(SavedStateHandle(mapOf(JEDI_DETAIL_ID_ARG to "1")), repo)
     }
 

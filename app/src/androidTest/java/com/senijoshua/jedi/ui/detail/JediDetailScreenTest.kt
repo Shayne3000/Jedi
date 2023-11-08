@@ -12,7 +12,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.lifecycle.SavedStateHandle
 import com.senijoshua.jedi.R
 import com.senijoshua.jedi.data.model.fakeJediList
-import com.senijoshua.jedi.data.repository.FakeJediRepositoryImpl
+import com.senijoshua.jedi.data.repository.FakeJediRepository
 import com.senijoshua.jedi.ui.MainActivity
 import com.senijoshua.jedi.ui.theme.JediTheme
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -38,14 +38,14 @@ class JediDetailScreenTest {
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     // Setup dependencies and any needed resources
-    private lateinit var jediRepository: FakeJediRepositoryImpl
+    private lateinit var jediRepository: FakeJediRepository
 
     private lateinit var backIcon: String
 
     @Before
     fun setUp() {
         // no hilt inject as we're not injecting anything with hilt
-        jediRepository = FakeJediRepositoryImpl()
+        jediRepository = FakeJediRepository()
 
         composeTestRule.activity.apply {
             backIcon = getString(R.string.back_icon)

@@ -1,6 +1,6 @@
 package com.senijoshua.jedi.util
 
-import com.senijoshua.jedi.data.repository.FakeJediRepositoryImpl
+import com.senijoshua.jedi.data.repository.FakeJediRepository
 import com.senijoshua.jedi.data.repository.JediRepository
 import com.senijoshua.jedi.di.DataModule
 import dagger.Module
@@ -18,5 +18,5 @@ object TestDataModule {
 
     @Singleton
     @Provides
-    fun provideJediRepository(): JediRepository = FakeJediRepositoryImpl()
+    fun provideJediRepository(): JediRepository = FakeJediRepository()
 }

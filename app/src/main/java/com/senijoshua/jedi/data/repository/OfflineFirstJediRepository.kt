@@ -27,7 +27,7 @@ import javax.inject.Inject
  * NB: Data source classes aren't explicitly used as that would just be unnecessary bloat at this
  * scale.
  */
-class JediRepositoryImpl @Inject constructor(
+class OfflineFirstJediRepository @Inject constructor(
     private val apiService: JediApi,
     private val db: JediDao,
     @IoDispatcher private val dispatcher: CoroutineDispatcher
@@ -38,7 +38,7 @@ class JediRepositoryImpl @Inject constructor(
      * notified of any changes/updates to the Jedi table in the DB and retrieves fresh data from the
      * network if the table is empty.
      */
-    override suspend fun getJedis(): Flow<Result<List<Jedi>>> {
+    override suspend fun getJedisStream(): Flow<Result<List<Jedi>>> {
         return withContext(dispatcher) {
             db.getAllJedis()
                 .map { jediList ->

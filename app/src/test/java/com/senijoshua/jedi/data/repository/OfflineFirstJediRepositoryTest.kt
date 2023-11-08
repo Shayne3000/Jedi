@@ -17,7 +17,7 @@ import org.junit.Before
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
-class JediRepositoryImplTest {
+class OfflineFirstJediRepositoryTest {
     private val testDispatcher = UnconfinedTestDispatcher()
 
     private val testScope = TestScope(testDispatcher)
@@ -26,13 +26,13 @@ class JediRepositoryImplTest {
 
     private lateinit var jediApi: FakeApi
 
-    private lateinit var repository: JediRepositoryImpl
+    private lateinit var repository: OfflineFirstJediRepository
 
     @Before
     fun setUp() {
         jediDao = FakeJediDao()
         jediApi = FakeApi()
-        repository = JediRepositoryImpl(jediApi, jediDao, testDispatcher)
+        repository = OfflineFirstJediRepository(jediApi, jediDao, testDispatcher)
     }
 
     @Test
@@ -44,7 +44,7 @@ class JediRepositoryImplTest {
             // but we are only interested in the second emission.
             // The first emission is when the DB is empty resulting in Result's data being empty
             // and the second one after the network request returns and injects a list of jedis into the DB.
-            val result = repository.getJedis().drop(1).first()
+            val result = repository.getJedisStream().drop(1).first()
 
             check(result is Result.Success)
             assertTrue(result.data.isNotEmpty())
@@ -55,7 +55,7 @@ class JediRepositoryImplTest {
         testScope.runTest {
             jediApi.shouldThrowError = true
 
-            val result = repository.getJedis().first()
+            val result = repository.getJedisStream().first()
 
             check(result is Result.Error)
             assertEquals("error", result.error.message)
@@ -66,7 +66,7 @@ class JediRepositoryImplTest {
         testScope.runTest {
             jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
 
-            val result = repository.getJedis().first()
+            val result = repository.getJedisStream().first()
 
             check(result is Result.Success)
             assertEquals(fakeJediList.first().gender, result.data.first().gender)

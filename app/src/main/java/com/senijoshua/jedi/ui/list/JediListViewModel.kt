@@ -28,7 +28,7 @@ class JediListViewModel @Inject constructor(
 
     fun loadJedis() {
         viewModelScope.launch {
-            jediRepository.getJedis().collect { result ->
+            jediRepository.getJedisStream().collect { result ->
                 when (result) {
                     is Result.Success -> {
                         _uiState.update { currentUiState ->

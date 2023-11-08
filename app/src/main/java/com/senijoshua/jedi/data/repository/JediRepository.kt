@@ -1,7 +1,7 @@
 package com.senijoshua.jedi.data.repository
 
-import com.senijoshua.jedi.data.util.Result
 import com.senijoshua.jedi.data.model.Jedi
+import com.senijoshua.jedi.data.util.Result
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
  * and testing.
  */
 interface JediRepository {
-    suspend fun getJedis(): Flow<Result<List<Jedi>>>
+    suspend fun getJedisStream(): Flow<Result<List<Jedi>>>
 
     suspend fun getJediById(jediId: Int): Result<Jedi>
 }

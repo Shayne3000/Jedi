@@ -1,6 +1,6 @@
 package com.senijoshua.jedi.ui.list
 
-import com.senijoshua.jedi.data.repository.FakeJediRepositoryImpl
+import com.senijoshua.jedi.data.repository.FakeJediRepository
 import com.senijoshua.jedi.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -21,14 +21,14 @@ class JediListViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     // Fake dependencies
-    private lateinit var repo: FakeJediRepositoryImpl
+    private lateinit var repo: FakeJediRepository
 
     // Class under test
     private lateinit var vm: JediListViewModel
 
     @Before
     fun setUp() {
-        repo = FakeJediRepositoryImpl()
+        repo = FakeJediRepository()
         vm = JediListViewModel(repo)
     }
 
