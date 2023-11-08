@@ -9,8 +9,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import com.senijoshua.jedi.R
-import com.senijoshua.jedi.ui.model.fakeJediList
 import com.senijoshua.jedi.ui.components.JEDI_PROGRESS_TAG
+import com.senijoshua.jedi.ui.model.fakeJediList
 import com.senijoshua.jedi.ui.theme.JediTheme
 import org.junit.Before
 import org.junit.Rule
@@ -28,7 +28,6 @@ class JediDetailContentTest {
     private lateinit var backIcon: String
 
     // Setup content under test
-
     @Before
     fun setUp() {
         composeTestRule.activity.apply {
