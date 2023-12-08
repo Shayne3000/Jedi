@@ -3,6 +3,8 @@ package com.senijoshua.jedi.ui.list
 import com.senijoshua.jedi.data.repository.FakeJediRepository
 import com.senijoshua.jedi.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -41,6 +43,10 @@ class JediListViewModelTest {
 
     @Test
     fun `jediLoad returns a list of jedi on success`() = runTest {
+        backgroundScope.launch(mainDispatcherRule.testDispatcher) {
+            vm.uiState.collect()
+        }
+
         vm.loadJedis()
 
         assertTrue(vm.uiState.value.jedis.isNotEmpty())
@@ -52,6 +58,9 @@ class JediListViewModelTest {
     @Test
     fun `jediLoad returns an error on jedi load failure`() = runTest {
         repo.shouldThrowError = true
+        backgroundScope.launch(mainDispatcherRule.testDispatcher) {
+            vm.uiState.collect()
+        }
 
         vm.loadJedis()
 
