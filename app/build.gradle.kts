@@ -145,6 +145,7 @@ dependencies {
     // Instrumented Test dependencies
     androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
     androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
+    // Hilt test artifacts
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.46.1")
     androidTestImplementation("androidx.test:runner:1.5.2")
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.46.1")
