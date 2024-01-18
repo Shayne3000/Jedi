@@ -3,8 +3,8 @@ package com.senijoshua.jedi.util
 import com.senijoshua.jedi.data.repository.FakeJediRepository
 import com.senijoshua.jedi.data.repository.JediRepository
 import com.senijoshua.jedi.di.DataModule
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import javax.inject.Singleton
@@ -14,9 +14,9 @@ import javax.inject.Singleton
     components = [SingletonComponent::class],
     replaces = [DataModule::class]
 )
-object TestDataModule {
+abstract class TestDataModule {
 
     @Singleton
-    @Provides
-    fun provideJediRepository(): JediRepository = FakeJediRepository()
+    @Binds
+    abstract fun provideJediRepository(repository: FakeJediRepository): JediRepository
 }

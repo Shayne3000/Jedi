@@ -5,12 +5,13 @@ import com.senijoshua.jedi.data.model.fakeJediList
 import com.senijoshua.jedi.data.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 /**
  * A mock/fake implementation of [JediRepository] with hard coded data for
  * testing.
  */
-class FakeJediRepository : JediRepository {
+class FakeJediRepository @Inject constructor(): JediRepository {
 
     var shouldThrowError = false
 
