@@ -34,6 +34,7 @@ class JediListViewModel @Inject constructor(
                 when (result) {
                     is Result.Success -> {
                         _uiState.update { currentUiState ->
+                            // return a copy of the current state but now with some properties changed
                             currentUiState.copy(
                                 isLoadingJedis = false,
                                 jedis = result.data
