@@ -56,7 +56,7 @@ fun JediListScreen(
     // the uiState StateFlow and convert to Compose State.
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // This content composable will be recomposed if the value held in the Compose State, screenUiState changes.
+    // JediListContent will be recomposed if the value held by the Compose State, screenUiState changes.
     JediListContent(
         modifier = modifier,
         uiState = screenUiState,
@@ -78,7 +78,7 @@ fun JediListContent(
     onNavigateToJediDetail: (Int, String) -> Unit = { _, _ -> },
     onErrorMessageShown: () -> Unit = {}
 ) {
-    // Hoist the (snack bar host) state outside the Scaffold and store it in the composition.
+    // Hoist the (snack bar host) state outside the Scaffold and use remember to store it memory for persistence across recomposition.
     val snackBarHostState = remember { SnackbarHostState() }
 
     uiState.errorMessage?.let { message ->
