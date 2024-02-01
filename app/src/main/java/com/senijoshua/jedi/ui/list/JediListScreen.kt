@@ -49,7 +49,7 @@ const val JEDI_LIST_TAG = "JediListTag"
 fun JediListScreen(
     modifier: Modifier = Modifier,
     viewModel: JediListViewModel,
-    onNavigateToJediDetail: (Int, String) -> Unit = {_, _ -> }
+    onNavigateToJediDetail: (Int, String) -> Unit = { _, _ -> }
 ) {
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -126,7 +126,9 @@ fun JediListContent(
             if (uiState.isLoadingJedis) {
                 JediCircularProgressIndicator(modifier)
             } else if (uiState.jedis.isNotEmpty()) {
-                LazyColumn(modifier = Modifier.fillMaxSize().testTag(JEDI_LIST_TAG)) {
+                LazyColumn(modifier = Modifier
+                    .fillMaxSize()
+                    .testTag(JEDI_LIST_TAG)) {
                     items(items = uiState.jedis, key = { jedi -> jedi.id }) {
                         JediItem(jedi = it, onJediClicked = { jediId, jediName ->
                             onNavigateToJediDetail(jediId, jediName)
@@ -152,8 +154,7 @@ fun JediItem(
             )
             .height(dimensionResource(id = R.dimen.list_item_height))
             .fillMaxWidth()
-            .testTag(JEDI_ITEM_CARD_TAG)
-        ,
+            .testTag(JEDI_ITEM_CARD_TAG),
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(id = R.dimen.card_elevation)),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
@@ -192,10 +193,6 @@ fun JediItem(
     }
 }
 
-private val jediListPreviewUiState = JediListScreenUiState(
-    jedis = fakeJediList
-)
-
 @JediPreview
 @Composable
 fun JediItemPreview() {
@@ -209,7 +206,9 @@ fun JediItemPreview() {
 fun JediListPreview() {
     JediTheme {
         JediListContent(
-            uiState = jediListPreviewUiState,
+            uiState = JediListScreenUiState(
+                jedis = fakeJediList
+            )
         )
     }
 }

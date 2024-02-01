@@ -20,8 +20,6 @@ class JediListViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(JediListScreenUiState())
 
-    // NB: This is for triaging purposes and a bit of overkill, a correct way would be to use stateIn when dealing with complex
-    // data-layer requests or a Flow for which there are multiple consumers/collectors listening for values.
     val uiState: StateFlow<JediListScreenUiState> = _uiState.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5000),

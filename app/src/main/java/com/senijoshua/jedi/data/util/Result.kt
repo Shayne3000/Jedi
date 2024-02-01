@@ -15,7 +15,7 @@ sealed class Result<out T> {
 
 /**
  * Flow Intermediary operator extension function to parameterize the data
- * type from a Flow in a Result type and in turn parameterize said Result type within a Flow.
+ * type, T from a Flow within a Result type and then parameterize that Result type in a Flow.
  *
  * Essentially, it converts Flow<T> to Flow<Result<T>>.
  */
