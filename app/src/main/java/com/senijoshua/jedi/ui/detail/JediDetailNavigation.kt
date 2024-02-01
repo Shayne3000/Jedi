@@ -21,6 +21,7 @@ private const val JEDI_DETAIL_ROUTE =
  * and you do not allow callers to just specify any value as the route to which to navigate.
  */
 fun NavController.navigateToDetailScreen(jediId: Int, jediName: String) {
+    // navigation compose uses a web-esque url route pattern for navigation.
     this.navigate("detail/$jediId?$JEDI_DETAIL_NAME_ARG=$jediName")
 }
 
