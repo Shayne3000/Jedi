@@ -43,7 +43,7 @@ const val JEDI_LIST_TAG = "JediListTag"
 
 /**
  * Screen for the Jedi List that exposes an event to navigate to the detail screen
- * to the event handler i.e. caller.
+ * to an event handler i.e. the caller which in this case is the NavGraph.
  */
 @Composable
 fun JediListScreen(
@@ -51,9 +51,6 @@ fun JediListScreen(
     viewModel: JediListViewModel,
     onNavigateToJediDetail: (Int, String) -> Unit = {_, _ -> }
 ) {
-    // Start listening for and getting emitted state values i.e. state updates from the
-    // UI logic state holder i.e. ViewModel in a lifecycle-aware manner through
-    // the uiState StateFlow and convert to Compose State.
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     JediListContent(
@@ -77,7 +74,6 @@ fun JediListContent(
     onNavigateToJediDetail: (Int, String) -> Unit = { _, _ -> },
     onErrorMessageShown: () -> Unit = {}
 ) {
-    // Hoist the (snack bar host) state outside the Scaffold and store it in the composition.
     val snackBarHostState = remember { SnackbarHostState() }
 
     uiState.errorMessage?.let { message ->

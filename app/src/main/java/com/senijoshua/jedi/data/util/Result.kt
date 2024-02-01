@@ -14,10 +14,10 @@ sealed class Result<out T> {
 }
 
 /**
- * Extension intermediary operator function to parameterize the data
- * type from a Flow in a Result type and parameterize said Result in within a Flow.
+ * Flow Intermediary operator extension function to parameterize the data
+ * type from a Flow in a Result type and in turn parameterize said Result type within a Flow.
  *
- * Essentially, convert Flow<T> to Flow<Result<T>>.
+ * Essentially, it converts Flow<T> to Flow<Result<T>>.
  */
 fun <T> Flow<T>.asResult(): Flow<Result<T>> = this.map<T, Result<T>> {
     Result.Success(it)

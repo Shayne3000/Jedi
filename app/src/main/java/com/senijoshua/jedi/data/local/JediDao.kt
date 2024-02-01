@@ -10,8 +10,6 @@ interface JediDao {
     @Upsert
     suspend fun insertAll(jediList: List<JediEntity>)
 
-    // Track changes in the Jedi table using Flows to keep the displayed list of Jedis in the UI
-    // up-to-date by emitting a new list when any changes to the table (i.e. insertions/removals) occur.
     @Query("SELECT * FROM jedi")
     fun getAllJedis(): Flow<List<JediEntity>>
 

@@ -1,5 +1,6 @@
 package com.senijoshua.jedi.di
 
+import com.senijoshua.jedi.BuildConfig
 import com.senijoshua.jedi.data.remote.JediApi
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -29,7 +30,11 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
+        level = if (BuildConfig.DEBUG) {
+            HttpLoggingInterceptor.Level.BODY
+        } else {
+            HttpLoggingInterceptor.Level.NONE
+        }
     }
 
     @Singleton

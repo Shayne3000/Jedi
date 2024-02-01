@@ -28,8 +28,6 @@ private val DarkColorScheme = darkColorScheme(
     surfaceVariant = md_theme_dark_surfaceVariant
 )
 
-// onPrimary, onSecondary, onTertiary, Surface, Surface container/background onBackground
-
 private val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
@@ -47,7 +45,6 @@ private val LightColorScheme = lightColorScheme(
 @Composable
 fun JediTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
@@ -73,7 +70,6 @@ fun JediTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
-        shapes = shapes,
         content = content
     )
 }

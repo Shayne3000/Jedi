@@ -7,11 +7,8 @@ import androidx.navigation.compose.composable
 const val JediListRoute = "list"
 
 /**
- * NavGraph for the JediList Screen which provides runtime type safety
- * when using Navigation Compose.
- * See: https://developer.android.com/guide/navigation/design/type-safety
- *
- * The nav graph can be nested into the root graph in the NavHost.
+ * NavGraph for the JediList Screen that exposes an event to navigate to the detail screen
+ * to an event handler i.e. the caller, which in this case is the NavHost.
  */
 fun NavGraphBuilder.jediListScreen(
     onNavigateToJediDetail: (Int, String) -> Unit
@@ -19,8 +16,6 @@ fun NavGraphBuilder.jediListScreen(
     composable(JediListRoute){
         val viewModel = hiltViewModel<JediListViewModel>()
         JediListScreen(viewModel = viewModel, onNavigateToJediDetail = { jediId, jediName ->
-            // handle event exposed by the screen
-            // trigger the navigation event exposed to the caller of this graph for handling.
             onNavigateToJediDetail(jediId, jediName)
         })
     }

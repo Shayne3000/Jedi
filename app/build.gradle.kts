@@ -57,6 +57,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -138,14 +139,13 @@ dependencies {
     kapt("androidx.room:room-compiler:$roomVersion")
     // Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$roomVersion")
-    // Local Test Dependencies
+    // Local test dependencies
     testImplementation("androidx.room:room-testing:$roomVersion")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
-    // Instrumented Test dependencies
+    // Instrumented test dependencies
     androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
     androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
-    // Hilt test artifacts
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.46.1")
     androidTestImplementation("androidx.test:runner:1.5.2")
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.46.1")

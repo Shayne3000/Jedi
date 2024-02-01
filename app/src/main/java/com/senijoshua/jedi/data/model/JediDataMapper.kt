@@ -18,7 +18,7 @@ import com.senijoshua.jedi.data.remote.NetworkJedi
  */
 
 /**
- * Converts the network model to the local model for persistence in the DB.
+ * Converts the network model to the local representation for persistence in the DB.
  */
 fun NetworkJedi.toLocal() = JediEntity(
     name = name,
@@ -33,7 +33,7 @@ fun NetworkJedi.toLocal() = JediEntity(
 fun List<NetworkJedi>.toLocal() = map(NetworkJedi::toLocal)
 
 /**
- * Converts the local model to the model used in layers external to the data layer.
+ * Converts the local model to the model relevant for layers external to the data layer.
  */
 fun JediEntity.toExternalModel() = Jedi(
     id = id,
