@@ -49,10 +49,6 @@ fun JediDetailScreen(
 ) {
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    // NB: The approach of putting the scaffold here as shown in the Compose samples
-    // i.e. Todoapp/taskdetail works better when the ScreenUIState is a data class and not
-    // a sealed class/interface. The Latter is useful when within the screen content composable.
-
     JediDetailContent(
         modifier = modifier,
         topBarTitle = topBarTitle,
@@ -61,10 +57,6 @@ fun JediDetailScreen(
         onBackClicked = { onBackClicked() }
     )
 
-    // Like with AndroidViews, the DB lookup can be called before you start listening for (emitted) screen UI
-    // State updates as opposed to doing so afterwards as done here. Though a race happening between them might be of concern,
-    // the async call should be main safe and thus will not block the execution of the main thread so collect
-    // will be called before the async op returns.
     viewModel.getJedi()
 }
 
@@ -117,7 +109,8 @@ fun JediDetailContent(
 
                     ConstraintLayout(
                         modifier = modifier
-                            .fillMaxSize().testTag(CONSTRAINT_LAYOUT_TAG)
+                            .fillMaxSize()
+                            .testTag(CONSTRAINT_LAYOUT_TAG)
                     ) {
                         val (gender, height, mass, hairColor, skinColor) = createRefs()
                         val verticalPadding = dimensionResource(id = R.dimen.vertical_padding)
@@ -126,10 +119,12 @@ fun JediDetailContent(
                         val startGuideline = createGuidelineFromStart(horizontalPadding)
 
                         Text(
-                            modifier = Modifier.constrainAs(gender) {
-                                top.linkTo(parent.top, margin = verticalPadding)
-                                start.linkTo(startGuideline)
-                            }.testTag(jedi.gender),
+                            modifier = Modifier
+                                .constrainAs(gender) {
+                                    top.linkTo(parent.top, margin = verticalPadding)
+                                    start.linkTo(startGuideline)
+                                }
+                                .testTag(jedi.gender),
                             text = annotateText(
                                 stringResource(id = R.string.gender, jedi.gender),
                                 jedi.gender
@@ -141,10 +136,12 @@ fun JediDetailContent(
                         )
 
                         Text(
-                            modifier = Modifier.constrainAs(height) {
-                                top.linkTo(gender.bottom, margin = verticalPadding)
-                                start.linkTo(startGuideline)
-                            }.testTag(jedi.height),
+                            modifier = Modifier
+                                .constrainAs(height) {
+                                    top.linkTo(gender.bottom, margin = verticalPadding)
+                                    start.linkTo(startGuideline)
+                                }
+                                .testTag(jedi.height),
                             text = annotateText(
                                 stringResource(id = R.string.height, jedi.height),
                                 jedi.height
@@ -156,10 +153,12 @@ fun JediDetailContent(
                         )
 
                         Text(
-                            modifier = Modifier.constrainAs(mass) {
-                                top.linkTo(height.bottom, margin = verticalPadding)
-                                start.linkTo(startGuideline)
-                            }.testTag(jedi.mass),
+                            modifier = Modifier
+                                .constrainAs(mass) {
+                                    top.linkTo(height.bottom, margin = verticalPadding)
+                                    start.linkTo(startGuideline)
+                                }
+                                .testTag(jedi.mass),
                             text = annotateText(
                                 stringResource(id = R.string.mass, jedi.mass),
                                 jedi.mass
@@ -171,10 +170,12 @@ fun JediDetailContent(
                         )
 
                         Text(
-                            modifier = Modifier.constrainAs(hairColor) {
-                                top.linkTo(mass.bottom, margin = verticalPadding)
-                                start.linkTo(startGuideline)
-                            }.testTag(jedi.hairColor),
+                            modifier = Modifier
+                                .constrainAs(hairColor) {
+                                    top.linkTo(mass.bottom, margin = verticalPadding)
+                                    start.linkTo(startGuideline)
+                                }
+                                .testTag(jedi.hairColor),
                             text = annotateText(
                                 stringResource(id = R.string.hair_color, jedi.hairColor),
                                 jedi.hairColor
@@ -186,10 +187,12 @@ fun JediDetailContent(
                         )
 
                         Text(
-                            modifier = Modifier.constrainAs(skinColor) {
-                                top.linkTo(hairColor.bottom, margin = verticalPadding)
-                                start.linkTo(startGuideline)
-                            }.testTag(jedi.skinColor),
+                            modifier = Modifier
+                                .constrainAs(skinColor) {
+                                    top.linkTo(hairColor.bottom, margin = verticalPadding)
+                                    start.linkTo(startGuideline)
+                                }
+                                .testTag(jedi.skinColor),
                             text = annotateText(
                                 stringResource(id = R.string.skin_color, jedi.skinColor),
                                 jedi.skinColor
@@ -229,7 +232,7 @@ fun annotateText(textToAnnotate: String, textToNotAnnotate: String): AnnotatedSt
 private fun JediDetailPreview() {
     val previewScreenUiState = JediDetailScreenUiState.Success(
         Jedi(
-            1, "Luke Skywalker", "Male", "170cm", "81kg", "Brown", "Green"
+            1, "Luke Skywalker", "Male", "170", "81", "Brown", "Green"
         )
     )
 

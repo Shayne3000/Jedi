@@ -25,7 +25,6 @@ class JediDetailViewModel @Inject constructor(
 
     fun getJedi() {
         viewModelScope.launch {
-            // one-shot async request from DB
             when (val jediResult = jediRepository.getJediById(jediId)) {
                 is Result.Success -> {
                     _uiState.value = JediDetailScreenUiState.Success(jediResult.data)
