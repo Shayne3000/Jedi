@@ -45,7 +45,7 @@ class OfflineFirstJediRepository @Inject constructor(
      */
     override suspend fun getJedisStream(): Flow<Result<List<Jedi>>> {
         return withContext(dispatcher) {
-            if (cachedDataIsStale() || db.isEmpty()) {
+            if (cachedDataIsStale()) {
                 val jediResponse = apiService.getJedis()
                 db.insertAll(jediResponse.results.toLocal())
             }
@@ -67,6 +67,8 @@ class OfflineFirstJediRepository @Inject constructor(
     }
 
     private suspend fun cachedDataIsStale(): Boolean {
+        // NB: This also implicitly verifies that the table
+        // is not empty. If it is, `getTimeCreated` would return null.
         return (System.currentTimeMillis() - (db.getTimeCreated()
             ?: 0)) > dbCacheLimit
     }

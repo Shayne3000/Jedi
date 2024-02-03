@@ -18,7 +18,4 @@ interface JediDao {
 
     @Query("SELECT time_created FROM jedi ORDER BY time_created DESC LIMIT 1")
     suspend fun getTimeCreated(): Long?
-
-    @Query("SELECT (SELECT COUNT(*) FROM jedi) == 0")
-    suspend fun isEmpty(): Boolean
 }
