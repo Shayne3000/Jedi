@@ -32,7 +32,7 @@ class OfflineFirstJediRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher
 ) : JediRepository {
 
-    private val dbCacheLimit = TimeUnit.MILLISECONDS.convert(15, TimeUnit.MINUTES)
+    private val dbCacheLimit = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
 
     /**
      * An observable stream of Jedi is returned from the DB which notifies us of
