@@ -32,12 +32,12 @@ class OfflineFirstJediRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher
 ) : JediRepository {
 
-    private val dbCacheLimit = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
+    private val dbCacheLimit = TimeUnit.MILLISECONDS.convert(15, TimeUnit.MINUTES)
 
     /**
      * An observable stream of Jedi is returned from the DB which notifies us of
      * any changes to the Jedi table and retrieves fresh data from the
-     * network if the table is empty.
+     * network if the DB is empty or the held data is stale.
      *
      * NB: May not need to move the execution of the coroutine off the Main thread
      * to the IO thread as Retrofit & Room perform suspend ops using the IO dispatcher,
