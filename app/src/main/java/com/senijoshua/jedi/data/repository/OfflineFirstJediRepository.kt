@@ -11,8 +11,8 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.withContext
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -32,8 +32,10 @@ class OfflineFirstJediRepository @Inject constructor(
     private val dispatcher: CoroutineDispatcher
 ) : JediRepository {
 
+    private val dbCacheLimit = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
+
     /**
-     * An observable stream of jedis is returned from the DB that notifies us of
+     * An observable stream of Jedi is returned from the DB which notifies us of
      * any changes to the Jedi table and retrieves fresh data from the
      * network if the table is empty.
      *
@@ -43,17 +45,14 @@ class OfflineFirstJediRepository @Inject constructor(
      */
     override suspend fun getJedisStream(): Flow<Result<List<Jedi>>> {
         return withContext(dispatcher) {
-            db.getAllJedis()
-                .map { jediList ->
-                    jediList.toExternalModel()
-                }.onEach { jediList ->
-                    if (jediList.isEmpty()) {
-                        val jediResponse = apiService.getJedis()
-                        db.insertAll(jediResponse.results.toLocal())
-                    }
-                }
-                .distinctUntilChanged()
-                .asResult()
+            if (cachedDataIsStale() || db.isEmpty()) {
+                val jediResponse = apiService.getJedis()
+                db.insertAll(jediResponse.results.toLocal())
+            }
+
+            db.getAllJedis().map { jediList ->
+                jediList.toExternalModel()
+            }.distinctUntilChanged().asResult()
         }
     }
 
@@ -65,5 +64,10 @@ class OfflineFirstJediRepository @Inject constructor(
                 Result.Error(e)
             }
         }
+    }
+
+    private suspend fun cachedDataIsStale(): Boolean {
+        return (System.currentTimeMillis() - (db.getTimeCreated()
+            ?: 0)) > dbCacheLimit
     }
 }

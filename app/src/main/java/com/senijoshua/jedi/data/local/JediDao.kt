@@ -15,4 +15,10 @@ interface JediDao {
 
     @Query("SELECT * FROM jedi WHERE id = :jediId")
     suspend fun getJediById(jediId: Int): JediEntity
+
+    @Query("SELECT time_created FROM jedi ORDER BY time_created DESC LIMIT 1")
+    suspend fun getTimeCreated(): Long?
+
+    @Query("SELECT (SELECT COUNT(*) FROM jedi) == 0")
+    suspend fun isEmpty(): Boolean
 }

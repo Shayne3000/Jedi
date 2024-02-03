@@ -20,6 +20,8 @@ data class JediEntity(
     @ColumnInfo(name = "skin_color")
     val skinColor: String,
     @ColumnInfo(name = "eye_color")
-    val eyeColor: String
+    val eyeColor: String,
+    @ColumnInfo(name = "time_created")
+    val timeCreated: Long = System.currentTimeMillis()
 )
 
