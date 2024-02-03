@@ -2,6 +2,7 @@ package com.senijoshua.jedi.data.local
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.util.concurrent.TimeUnit
 
 /**
  * A mock/fake "working" implementation of [JediDao] with hard coded data for
@@ -21,5 +22,13 @@ class FakeJediDao : JediDao {
 
     override suspend fun getJediById(jediId: Int): JediEntity {
         return jediEntities.value[jediId]
+    }
+
+    override suspend fun getTimeCreated(): Long? {
+        return if (jediEntities.value.isEmpty()) {
+            null
+        } else {
+            TimeUnit.MILLISECONDS.convert(20, TimeUnit.MINUTES)
+        }
     }
 }
