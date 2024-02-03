@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit
  * testing.
  */
 class FakeJediDao : JediDao {
+    var hasStaleData = false
+
     // In-memory "database" against which we would execute DB operations.
     private var jediEntities = MutableStateFlow(
         emptyList<JediEntity>()
@@ -28,7 +30,11 @@ class FakeJediDao : JediDao {
         return if (jediEntities.value.isEmpty()) {
             null
         } else {
-            TimeUnit.MILLISECONDS.convert(20, TimeUnit.MINUTES)
+            if (hasStaleData) {
+                TimeUnit.MILLISECONDS.convert(20, TimeUnit.MINUTES)
+            } else {
+                System.currentTimeMillis()
+            }
         }
     }
 }

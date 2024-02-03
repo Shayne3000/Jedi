@@ -32,18 +32,14 @@ class OfflineFirstJediRepositoryTest {
     fun setUp() {
         jediDao = FakeJediDao()
         jediApi = FakeApi()
-        repository = OfflineFirstJediRepository(jediApi, jediDao, testDispatcher)
+        repository = OfflineFirstJediRepository(jediApi, jediDao)
     }
 
     @Test
-    fun `Given that the DB is empty, getJedis should return jedi list on successful network request`() =
+    fun `Given that the DB is empty, getJediStream should return jedi list on successful network request`() =
         testScope.runTest {
             assertTrue(jediDao.getAllJedis().first().isEmpty())
-
-            // NB: drop(1) is because, the "DB"'s Flow makes multiple emissions
-            // but we are only interested in the second emission.
-            // The first emission is when the DB is empty resulting in Result's data being empty
-            // and the second one after the network request returns and injects a list of jedis into the DB.
+            
             val result = repository.getJedisStream().drop(1).first()
 
             check(result is Result.Success)
@@ -51,7 +47,7 @@ class OfflineFirstJediRepositoryTest {
         }
 
     @Test
-    fun `Given that the DB is empty, getJedis should return an error on network request failure`() =
+    fun `Given that the DB is empty, getJediStream should return an error on network request failure`() =
         testScope.runTest {
             jediApi.shouldThrowError = true
 
@@ -62,7 +58,7 @@ class OfflineFirstJediRepositoryTest {
         }
 
     @Test
-    fun `Given that the DB is not empty, getJedis should return a jedi list from the DB`() =
+    fun `Given that the DB is not empty and does not have stale data, getJedis should return a jedi list from the DB`() =
         testScope.runTest {
             jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
 
@@ -72,6 +68,32 @@ class OfflineFirstJediRepositoryTest {
             assertEquals(fakeJediList.first().gender, result.data.first().gender)
             assertEquals(fakeJediList.last().hairColor, result.data.last().hairColor)
         }
+
+    @Test
+    fun `Given that the DB is not empty & has stale data, getJediStream loads a jedi list from the server on Successful request`() =
+        testScope.runTest {
+            jediDao.hasStaleData = true
+            jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
+
+            val result = repository.getJedisStream().first()
+
+            check(result is Result.Success)
+            assertEquals(fakeJediList.first().gender, result.data.first().gender)
+        }
+
+    @Test
+    fun `Given that the DB is not empty & has stale data, getJediStream returns an error on network request failure`() =
+        testScope.runTest {
+            jediDao.hasStaleData = true
+            jediApi.shouldThrowError = true
+            jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
+
+            val result = repository.getJedisStream().first()
+
+            check(result is Result.Error)
+            assertEquals("error", result.error.message)
+        }
+
 
     @Test
     fun `Given an id, getJediById returns the correct Jedi model on success`() = testScope.runTest {
