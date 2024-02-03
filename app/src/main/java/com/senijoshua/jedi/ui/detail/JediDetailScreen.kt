@@ -63,7 +63,7 @@ fun JediDetailScreen(
 
     // Like with AndroidViews, the DB lookup can be called before you start listening for (emitted) screen UI
     // State updates as opposed to doing so afterwards as done here. Though a race happening between them might be of concern,
-    // the async call should be main safe and thus will not block the execution of the main thread so collect
+    // the async call should be main safe and thus will not block the continuation of the execution of this composable on the main thread so collect
     // will be called before the async op returns.
     viewModel.getJedi()
 }
