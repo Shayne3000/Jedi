@@ -39,7 +39,7 @@ class OfflineFirstJediRepositoryTest {
     fun `Given that the DB is empty, getJediStream should return jedi list on successful network request`() =
         testScope.runTest {
             assertTrue(jediDao.getAllJedis().first().isEmpty())
-            
+
             val result = repository.getJedisStream().drop(1).first()
 
             check(result is Result.Success)
