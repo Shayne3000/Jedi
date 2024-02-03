@@ -43,7 +43,7 @@ class OfflineFirstJediRepositoryTest {
             // NB: drop(1) is because, the "DB"'s Flow makes multiple emissions
             // but we are only interested in the second emission.
             // The first emission is when the DB is empty resulting in Result's data being empty
-            // and the second one after the network request returns and injects a list of jedis into the DB.
+            // and the second one is after the network request returns and injects a list of jedis into the DB.
             val result = repository.getJedisStream().drop(1).first()
 
             check(result is Result.Success)
