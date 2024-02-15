@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 class FakeJediDao : JediDao {
     var hasStaleData = false
 
-    // In-memory "database" against which we would execute DB operations.
+    // In-memory "database" against which we execute DB operations.
     private var jediEntities = MutableStateFlow(
         emptyList<JediEntity>()
     )

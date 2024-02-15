@@ -7,9 +7,7 @@ import com.senijoshua.jedi.data.repository.JediRepository
 import com.senijoshua.jedi.data.util.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,11 +18,8 @@ class JediListViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(JediListScreenUiState())
 
-    val uiState: StateFlow<JediListScreenUiState> = _uiState.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = _uiState.value
-    )
+    // TODO This is much ado, remove it as _uiState is already a stateFlow
+    val uiState: StateFlow<JediListScreenUiState> = _uiState
 
     fun loadJedis() {
         viewModelScope.launch {

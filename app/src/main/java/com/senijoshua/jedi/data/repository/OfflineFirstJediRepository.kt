@@ -37,7 +37,7 @@ class OfflineFirstJediRepository @Inject constructor(
         return db.getAllJedis()
             .map { jediEntities -> jediEntities.toExternalModel() }
             .onEach {
-                if (jediTableIsEmptyOrHasStaleData()) {
+                if (jediDataIsEmptyOrStale()) {
                     val jediResponse = apiService.getJedis()
                     db.insertAll(jediResponse.results.toLocal())
                 }
@@ -53,13 +53,13 @@ class OfflineFirstJediRepository @Inject constructor(
     }
 
     /**
-     * An cache invalidation paradigm facilitates the retrieval
+     * An cache invalidation paradigm that facilitates the retrieval
      * of fresh data from the remote service if the currently held data is stale
      * (i.e. has been stored for over an hour). It also implicitly verifies
-     * whether the table is empty or not as`getTimeCreated()` would return null
+     * whether the table is empty or not as `getTimeCreated()` returns null
      * if the table is empty.
      */
-    private suspend fun jediTableIsEmptyOrHasStaleData(): Boolean {
+    private suspend fun jediDataIsEmptyOrStale(): Boolean {
         return (System.currentTimeMillis() - (db.getTimeCreated()
             ?: 0)) > dbCacheLimit
     }

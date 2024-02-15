@@ -1,10 +1,10 @@
 package com.senijoshua.jedi.ui.list
 
+import com.senijoshua.jedi.data.model.fakeJediList
 import com.senijoshua.jedi.data.repository.FakeJediRepository
+import com.senijoshua.jedi.util.ERROR_TEXT
 import com.senijoshua.jedi.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -16,16 +16,11 @@ import org.junit.Test
 
 @ExperimentalCoroutinesApi
 class JediListViewModelTest {
-
-    // Setup a test rule to replace the main dispatcher with a TestDispatcher for all test cases so that
-    // an exception does not occur
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    // Fake dependencies
     private lateinit var repo: FakeJediRepository
 
-    // Class under test
     private lateinit var vm: JediListViewModel
 
     @Before
@@ -43,14 +38,10 @@ class JediListViewModelTest {
 
     @Test
     fun `jediLoad returns a list of jedi on success`() = runTest {
-        backgroundScope.launch(mainDispatcherRule.testDispatcher) {
-            vm.uiState.collect()
-        }
-
         vm.loadJedis()
 
         assertTrue(vm.uiState.value.jedis.isNotEmpty())
-        assertEquals("Jedi 0 gender", vm.uiState.value.jedis[0].gender)
+        assertEquals(fakeJediList[0].gender, vm.uiState.value.jedis[0].gender)
         assertNull(vm.uiState.value.errorMessage)
         assertFalse(vm.uiState.value.isLoadingJedis)
     }
@@ -58,13 +49,10 @@ class JediListViewModelTest {
     @Test
     fun `jediLoad returns an error on jedi load failure`() = runTest {
         repo.shouldThrowError = true
-        backgroundScope.launch(mainDispatcherRule.testDispatcher) {
-            vm.uiState.collect()
-        }
 
         vm.loadJedis()
 
-        assertEquals("error", vm.uiState.value.errorMessage)
+        assertEquals(ERROR_TEXT, vm.uiState.value.errorMessage)
         assertTrue(vm.uiState.value.jedis.isEmpty())
         assertFalse(vm.uiState.value.isLoadingJedis)
 

@@ -1,5 +1,7 @@
 package com.senijoshua.jedi.data.remote
 
+import com.senijoshua.jedi.util.ERROR_TEXT
+
 class FakeApi : JediApi {
     val dummyNetworkJedi = List(10) { index ->
         NetworkJedi(
@@ -17,7 +19,7 @@ class FakeApi : JediApi {
 
     override suspend fun getJedis(): JediResponse {
         return if (shouldThrowError) {
-            throw Exception("error")
+            throw Exception(ERROR_TEXT)
         } else {
             JediResponse(results = dummyNetworkJedi)
         }

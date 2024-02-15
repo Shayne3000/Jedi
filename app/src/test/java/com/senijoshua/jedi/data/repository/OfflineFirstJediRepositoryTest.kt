@@ -5,6 +5,7 @@ import com.senijoshua.jedi.data.model.fakeJediList
 import com.senijoshua.jedi.data.model.toLocal
 import com.senijoshua.jedi.data.remote.FakeApi
 import com.senijoshua.jedi.data.util.Result
+import com.senijoshua.jedi.util.ERROR_TEXT
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
@@ -54,7 +55,7 @@ class OfflineFirstJediRepositoryTest {
             val result = repository.getJedisStream().first()
 
             check(result is Result.Error)
-            assertEquals("error", result.error.message)
+            assertEquals(ERROR_TEXT, result.error.message)
         }
 
     @Test
@@ -91,7 +92,7 @@ class OfflineFirstJediRepositoryTest {
             val result = repository.getJedisStream().first()
 
             check(result is Result.Error)
-            assertEquals("error", result.error.message)
+            assertEquals(ERROR_TEXT, result.error.message)
         }
 
 
@@ -103,7 +104,7 @@ class OfflineFirstJediRepositoryTest {
         val result = repository.getJediById(jediId)
 
         check(result is Result.Success)
-        assertEquals("Jedi 1 gender", result.data.gender)
+        assertEquals(fakeJediList[jediId].gender, result.data.gender)
     }
 
     @Test

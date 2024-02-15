@@ -17,14 +17,14 @@ class FakeJediRepository @Inject constructor(): JediRepository {
 
     override suspend fun getJedisStream(): Flow<Result<List<Jedi>>> = flow {
         if (shouldThrowError) {
-            emit(Result.Error(Throwable("error")))
+            emit(Result.Error(Throwable("Error!")))
         } else {
             emit(Result.Success(fakeJediList))
         }
     }
 
     override suspend fun getJediById(jediId: Int): Result<Jedi> = if (shouldThrowError) {
-        Result.Error(Throwable("error"))
+        Result.Error(Throwable("Error!"))
     } else {
         Result.Success(fakeJediList[jediId])
     }
