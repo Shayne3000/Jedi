@@ -3,7 +3,6 @@ package com.senijoshua.jedi.di
 import com.senijoshua.jedi.BuildConfig
 import com.senijoshua.jedi.data.remote.JediApi
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,11 +20,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideMoshi(): Moshi {
-        return Moshi.Builder().apply {
-            add(KotlinJsonAdapterFactory())
-        }.build()
-    }
+    fun provideMoshi(): Moshi = Moshi.Builder().build()
 
     @Singleton
     @Provides
