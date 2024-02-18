@@ -17,17 +17,14 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Instrumented UI test for the JediDetailScreen content
+ * Instrumented unit UI test for the JediDetailScreen content.
  */
 class JediDetailContentTest {
-    // setup compose test rule within an activity since we'd be requiring string resources
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    // Setup any dependencies and resources needed for the test
     private lateinit var backIcon: String
 
-    // Setup content under test
     @Before
     fun setUp() {
         composeTestRule.activity.apply {
@@ -35,26 +32,27 @@ class JediDetailContentTest {
         }
     }
 
-    // Test cases that test every state of the UI
     @Test
     fun jediDetailContent_showsLoadingElements_onLoading() {
-        setJediDetailContent(fakeJediList[0].name, JediDetailScreenUiState.Loading)
+        val jedi = fakeJediList[0]
+        setJediDetailContent(jedi.name, JediDetailScreenUiState.Loading)
 
         composeTestRule.onNodeWithContentDescription(backIcon).assertIsDisplayed()
-        composeTestRule.onNodeWithText(fakeJediList[0].name).assertIsDisplayed()
+        composeTestRule.onNodeWithText(jedi.name).assertIsDisplayed()
         composeTestRule.onNodeWithTag(JEDI_PROGRESS_TAG).assertIsDisplayed()
     }
 
     @Test
     fun jediDetailContent_showsErrorSnackBar_onLoadError() {
         val errorMessage = "error"
-        setJediDetailContent(fakeJediList[0].name, JediDetailScreenUiState.Error(errorMessage = errorMessage))
+        val jedi = fakeJediList[0]
+        setJediDetailContent(jedi.name, JediDetailScreenUiState.Error(errorMessage = errorMessage))
 
         composeTestRule.onNodeWithContentDescription(backIcon).assertIsDisplayed()
-        composeTestRule.onNodeWithText(fakeJediList[0].name).assertIsDisplayed()
+        composeTestRule.onNodeWithText(jedi.name).assertIsDisplayed()
         composeTestRule.onNodeWithText(errorMessage).assertIsDisplayed()
         composeTestRule.onNodeWithTag(CONSTRAINT_LAYOUT_TAG).assertDoesNotExist()
-        composeTestRule.onNodeWithTag(fakeJediList[0].gender).assertDoesNotExist()
+        composeTestRule.onNodeWithTag(jedi.gender).assertDoesNotExist()
     }
 
     @Test

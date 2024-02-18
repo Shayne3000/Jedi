@@ -14,6 +14,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+/**
+ * Test class for [JediListViewModel] that demonstrates testing
+ * with coroutines and the MainDispatcherRule.
+ */
 @ExperimentalCoroutinesApi
 class JediListViewModelTest {
     @get:Rule

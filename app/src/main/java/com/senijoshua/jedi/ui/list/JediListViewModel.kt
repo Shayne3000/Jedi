@@ -18,7 +18,6 @@ class JediListViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(JediListScreenUiState())
 
-    // TODO This is much ado, remove it as _uiState is already a stateFlow
     val uiState: StateFlow<JediListScreenUiState> = _uiState
 
     fun loadJedis() {

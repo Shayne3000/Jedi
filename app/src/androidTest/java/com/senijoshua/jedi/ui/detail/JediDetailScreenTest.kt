@@ -24,27 +24,23 @@ import org.junit.Test
 
 /**
  * Integration test for the JediDetailScreen; testing its interaction
- * with the JediDetailViewModel
+ * with the JediDetailViewModel.
  */
 @HiltAndroidTest
 @ExperimentalCoroutinesApi
 class JediDetailScreenTest {
-    // Setup Hilt Rule
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
-    // Setup Compose test rule for the Main activity
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-    // Setup dependencies and any needed resources
     private lateinit var jediRepository: FakeJediRepository
 
     private lateinit var backIcon: String
 
     @Before
     fun setUp() {
-        // no hilt inject as we're not injecting anything with hilt
         jediRepository = FakeJediRepository()
 
         composeTestRule.activity.apply {
@@ -52,7 +48,6 @@ class JediDetailScreenTest {
         }
     }
 
-    // Setup Test cases that test the state of the screen
     @Test
     fun jediDetailScreen_showsCorrectJedi_onLoadSuccess() {
         val jedi = fakeJediList[1]
@@ -69,6 +64,7 @@ class JediDetailScreenTest {
     @Test
     fun jediDetailScreen_showsError_onLoadFailure() {
         val jedi = fakeJediList[1]
+        val errorText = "error"
 
         jediRepository.shouldThrowError = true
 
@@ -79,7 +75,7 @@ class JediDetailScreenTest {
         composeTestRule.onNode(hasTestTag(CONSTRAINT_LAYOUT_TAG)).assertDoesNotExist()
         composeTestRule.onNodeWithTag(jedi.gender).assertDoesNotExist()
 
-        composeTestRule.onNodeWithText("error").assertIsDisplayed()
+        composeTestRule.onNodeWithText(errorText).assertIsDisplayed()
     }
 
     /**

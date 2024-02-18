@@ -24,7 +24,6 @@ class JediItemTest {
 
     @Before
     fun setUp() {
-        // content under test
         composeTestRule.setContent {
             JediTheme {
                 JediItem(jedi = testJedi)
@@ -33,7 +32,7 @@ class JediItemTest {
     }
 
     @Test
-    fun jediItem_showsData_onJediModelInjection() {
+    fun jediItem_showsData_onJediDataInjection() {
         composeTestRule.onNodeWithTag(JEDI_ITEM_CARD_TAG).assertIsDisplayed()
 
         composeTestRule.onNodeWithTag(JEDI_ITEM_COLUMN_IN_CARD_TAG).assertIsDisplayed().assertHasClickAction()

@@ -18,27 +18,22 @@ import org.junit.Rule
 import org.junit.Test
 
 /**
- * Instrumented UI unit test for the JediListScreen content.
+ * Instrumented unit UI test for the JediListScreen content.
  */
 class JediListContentTest {
-    // set compose rule
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-
-    // set up any dependencies like string resources used in the content
     private lateinit var jediListTitle: String
     private lateinit var jediMasters: String
 
     @Before
     fun setUp() {
         composeTestRule.activity.apply {
-            // access string resources used in the content for subsequent assertions
             jediListTitle = getString(R.string.jedi_list_title)
             jediMasters = getString(R.string.jedi_list_screen_header)
         }
     }
 
-    // Test cases for testing the UI screen's behaviour in every screen state
     @Test
     fun jediListContent_showsLoadingStateElements_OnLoading() {
         setupScreenContentUnderTest(

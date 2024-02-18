@@ -26,19 +26,15 @@ import org.junit.Test
  * End-to-end test that tests the complete app flow of starting the app,
  * loading up a list of Jedis, clicking on one of them, going to the detail screen
  * to view the details of said Jedi and then returning to the previous screen.
- *
- * NB: User flow tests can double as navigation tests too.
  */
 @HiltAndroidTest
 class JediAppTest {
-    // Setup test rules
     @get:Rule(order = 0)
     var hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-    // Setup and inject dependencies required in the test
     private lateinit var jediListTitle: String
     private lateinit var jediMasters: String
     private lateinit var backIcon: String
@@ -47,7 +43,6 @@ class JediAppTest {
     @Before
     fun setUp() {
         composeTestRule.activity.setContent{
-            // start the app
             JediTheme {
                 JediApp()
             }
@@ -62,6 +57,8 @@ class JediAppTest {
 
     @Test
     fun jediApp_loadsUpJediList_clicksJediItem_showsJediDetails_returnsToHome() {
+        val jedi = fakeJediList[0]
+
         // verify that the Jedi List Screen has been displayed
         composeTestRule.onNodeWithText(jediListTitle).assertIsDisplayed()
 
@@ -70,13 +67,15 @@ class JediAppTest {
         // verify that the jedi list loaded up successfully
         composeTestRule.onNodeWithTag(JEDI_LIST_TAG).assertIsDisplayed()
 
-        composeTestRule.onNodeWithText(fakeJediList[0].name).assertIsDisplayed()
+        composeTestRule.onNodeWithText(jedi.name).assertIsDisplayed()
+
+        composeTestRule.onNodeWithText(jedi.gender).assertIsDisplayed()
 
         // Click a list item
-        composeTestRule.onNodeWithText(fakeJediList[0].name).performClick()
+        composeTestRule.onNodeWithText(jedi.name).performClick()
 
         // Verify that the Jedi Detail Screen was succesfully navigated to and displayed
-        composeTestRule.onNode(hasAnyChild(hasText(fakeJediList[0].name))).assertIsDisplayed()
+        composeTestRule.onNode(hasAnyChild(hasText(jedi.name))).assertIsDisplayed()
 
         composeTestRule.onNodeWithContentDescription(backIcon).assertIsDisplayed()
 
@@ -86,11 +85,11 @@ class JediAppTest {
         composeTestRule.onNodeWithTag(CONSTRAINT_LAYOUT_TAG).onChildren().assertCountEquals(5)
 
         // Verify that all the text items are displayed
-        composeTestRule.onNodeWithTag(fakeJediList[0].gender).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(fakeJediList[0].height).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(fakeJediList[0].mass).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(fakeJediList[0].hairColor).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(fakeJediList[0].skinColor).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(jedi.gender).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(jedi.height).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(jedi.mass).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(jedi.hairColor).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(jedi.skinColor).assertIsDisplayed()
 
         // Go back to the Main screen
         composeTestRule.onNodeWithContentDescription(backIcon).performClick()
