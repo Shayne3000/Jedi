@@ -45,7 +45,7 @@ class JediListScreenTest {
 
     @Before
     fun setUp() {
-        // inject repository with the FakeJediRepositoryImpl implementation here.
+        // Tell hilt to inject repository with the FakeJediRepositoryImpl implementation here.
         hiltRule.inject()
 
         composeTestRule.activity.apply {
