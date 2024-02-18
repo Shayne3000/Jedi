@@ -10,8 +10,9 @@ import dagger.hilt.testing.TestInstallIn
 import javax.inject.Singleton
 
 /**
- * Hilt Module to replace the [OfflineFirstJediRepository] implementation binding with a fake
- * for injection within all instrumented tests in the project.
+ * Hilt Module to replace the binding of the [OfflineFirstJediRepository] implementation for the
+ * [JediRepository] interface with a fake for injection within all instrumented tests
+ * in the project.
  */
 @Module
 @TestInstallIn(
