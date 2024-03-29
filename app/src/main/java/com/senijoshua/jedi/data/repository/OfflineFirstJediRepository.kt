@@ -1,6 +1,7 @@
 package com.senijoshua.jedi.data.repository
 
 import com.senijoshua.jedi.data.local.JediDao
+import com.senijoshua.jedi.data.local.JediEntity
 import com.senijoshua.jedi.data.model.Jedi
 import com.senijoshua.jedi.data.model.toExternalModel
 import com.senijoshua.jedi.data.model.toLocal
@@ -26,7 +27,8 @@ class OfflineFirstJediRepository @Inject constructor(
     private val db: JediDao,
 ) : JediRepository {
 
-    private val dbCacheLimit = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
+    private val dbRefreshCacheLimit = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
+    private val dbClearCacheLimit = TimeUnit.MILLISECONDS.convert(7, TimeUnit.DAYS)
 
     /**
      * An observable stream of Jedi is returned from the DB which notifies us of
@@ -35,13 +37,18 @@ class OfflineFirstJediRepository @Inject constructor(
      */
     override suspend fun getJedisStream(): Flow<Result<List<Jedi>>> {
         return db.getAllJedis()
-            .map { jediEntities -> jediEntities.toExternalModel() }
             .onEach {
-                if (jediDataIsEmptyOrStale()) {
+                if (isJediDataStaleOrEmpty(it)) {
                     val jediResponse = apiService.getJedis()
+
+                    if (canCleanUpOldData(it[0].timeCreated)) {
+                        db.clear()
+                    }
+
                     db.insertAll(jediResponse.results.toLocal())
                 }
-            }.asResult()
+            }.map { jediEntities -> jediEntities.toExternalModel() }
+            .asResult()
     }
 
     override suspend fun getJediById(jediId: Int): Result<Jedi> {
@@ -53,14 +60,27 @@ class OfflineFirstJediRepository @Inject constructor(
     }
 
     /**
-     * An cache invalidation paradigm that facilitates the retrieval
+     * A cache invalidation paradigm that facilitates the retrieval
      * of fresh data from the remote service if the currently held data is stale
      * (i.e. has been stored for over an hour). It also implicitly verifies
      * whether the table is empty or not as `getTimeCreated()` returns null
      * if the table is empty.
      */
-    private suspend fun jediDataIsEmptyOrStale(): Boolean {
-        return (System.currentTimeMillis() - (db.getTimeCreated()
-            ?: 0)) > dbCacheLimit
+    private fun isJediDataStaleOrEmpty(jedis: List<JediEntity>): Boolean {
+        if (jedis.isEmpty()) {
+            return true
+        }
+
+        return (System.currentTimeMillis() - (jedis[0].timeCreated)) > dbRefreshCacheLimit
     }
+
+    /**
+     * A cache invalidation paradigm that clears all the data in the jedi table
+     * for refilling with new data as data is considered redundant if there
+     * exists data in the DB that was inserted more than a week ago.
+     *
+     * Basically, we clear up the database after 1 week.
+     */
+    private fun canCleanUpOldData(timeCreated: Long) =
+        (System.currentTimeMillis() - timeCreated) > dbClearCacheLimit
 }

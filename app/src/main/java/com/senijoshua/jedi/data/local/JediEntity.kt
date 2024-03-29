@@ -22,6 +22,6 @@ data class JediEntity(
     @ColumnInfo(name = "eye_color")
     val eyeColor: String,
     @ColumnInfo(name = "time_created")
-    val timeCreated: Long? = System.currentTimeMillis()
+    val timeCreated: Long = System.currentTimeMillis()
 )
 
