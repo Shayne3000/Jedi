@@ -8,7 +8,9 @@ import com.senijoshua.jedi.data.model.toLocal
 import com.senijoshua.jedi.data.remote.JediApi
 import com.senijoshua.jedi.data.util.Result
 import com.senijoshua.jedi.data.util.asResult
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import java.util.concurrent.TimeUnit
@@ -25,6 +27,7 @@ import javax.inject.Inject
 class OfflineFirstJediRepository @Inject constructor(
     private val apiService: JediApi,
     private val db: JediDao,
+    private val dispatcher: CoroutineDispatcher
 ) : JediRepository {
 
     private val dbRefreshCacheLimit = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
@@ -36,7 +39,7 @@ class OfflineFirstJediRepository @Inject constructor(
      * network if the DB is empty or the held data is stale.
      */
     override suspend fun getJedisStream(): Flow<Result<List<Jedi>>> {
-        return db.getAllJedis()
+        return db.getAllJedis().flowOn(dispatcher)
             .onEach {
                 if (isJediDataStaleOrEmpty(it)) {
                     val jediResponse = apiService.getJedis()
@@ -81,8 +84,14 @@ class OfflineFirstJediRepository @Inject constructor(
      *
      * Basically, we clear up the database after 1 week.
      */
-    private fun canCleanUpOldData(jedis: List<JediEntity>) =
-        isLimitExceeded(jedis, dbClearCacheLimit)
+    private fun canCleanUpOldData(jedis: List<JediEntity>): Boolean {
+        if (jedis.isEmpty()) {
+            return false
+        }
+
+        return isLimitExceeded(jedis, dbClearCacheLimit)
+    }
+
 
     private fun isLimitExceeded(jedis: List<JediEntity>, limit: Long) =
         (System.currentTimeMillis() - (jedis[0].timeCreated)) > limit

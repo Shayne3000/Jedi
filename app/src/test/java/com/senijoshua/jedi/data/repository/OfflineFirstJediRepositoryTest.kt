@@ -33,7 +33,7 @@ class OfflineFirstJediRepositoryTest {
     fun setUp() {
         jediDao = FakeJediDao()
         jediApi = FakeApi()
-        repository = OfflineFirstJediRepository(jediApi, jediDao)
+        repository = OfflineFirstJediRepository(jediApi, jediDao, testDispatcher)
     }
 
     @Test
