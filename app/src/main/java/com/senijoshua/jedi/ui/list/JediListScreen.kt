@@ -64,7 +64,9 @@ fun JediListScreen(
         }
     )
 
-    viewModel.loadJedis()
+    LaunchedEffect(Unit) {
+        viewModel.loadJedis()
+    }
 }
 
 @Composable

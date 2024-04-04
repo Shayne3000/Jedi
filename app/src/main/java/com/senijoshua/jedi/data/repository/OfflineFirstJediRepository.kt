@@ -41,7 +41,7 @@ class OfflineFirstJediRepository @Inject constructor(
                 if (isJediDataStaleOrEmpty(it)) {
                     val jediResponse = apiService.getJedis()
 
-                    if (canCleanUpOldData(it[0].timeCreated)) {
+                    if (canCleanUpOldData(it)) {
                         db.clear()
                     }
 
@@ -66,21 +66,24 @@ class OfflineFirstJediRepository @Inject constructor(
      * whether the table is empty or not as `getTimeCreated()` returns null
      * if the table is empty.
      */
-    private fun isJediDataStaleOrEmpty(jedis: List<JediEntity>): Boolean {
-        if (jedis.isEmpty()) {
-            return true
-        }
-
-        return (System.currentTimeMillis() - (jedis[0].timeCreated)) > dbRefreshCacheLimit
-    }
+    private fun isJediDataStaleOrEmpty(jedis: List<JediEntity>) =
+        isLimitExceeded(jedis, dbRefreshCacheLimit)
 
     /**
-     * A cache invalidation paradigm that clears all the data in the jedi table
+     * An invalidation paradigm for the cache that clears all the data in the jedi table
      * for refilling with new data as data is considered redundant if there
      * exists data in the DB that was inserted more than a week ago.
      *
      * Basically, we clear up the database after 1 week.
      */
-    private fun canCleanUpOldData(timeCreated: Long) =
-        (System.currentTimeMillis() - timeCreated) > dbClearCacheLimit
+    private fun canCleanUpOldData(jedis: List<JediEntity>) =
+        isLimitExceeded(jedis, dbClearCacheLimit)
+
+    private fun isLimitExceeded(jedis: List<JediEntity>, limit: Long): Boolean {
+        if (jedis.isEmpty()) {
+            return true
+        }
+
+        return (System.currentTimeMillis() - (jedis[0].timeCreated)) > limit
+    }
 }
