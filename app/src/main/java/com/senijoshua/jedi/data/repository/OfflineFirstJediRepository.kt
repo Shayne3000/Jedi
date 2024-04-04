@@ -40,11 +40,11 @@ class OfflineFirstJediRepository @Inject constructor(
      */
     override suspend fun getJedisStream(): Flow<Result<List<Jedi>>> {
         return db.getAllJedis().flowOn(dispatcher)
-            .onEach {
-                if (isJediDataStaleOrEmpty(it)) {
+            .onEach { jediEntities ->
+                if (isJediDataStaleOrEmpty(jediEntities)) {
                     val jediResponse = apiService.getJedis()
 
-                    if (canCleanUpOldData(it)) {
+                    if (canCleanUpOldData(jediEntities)) {
                         db.clear()
                     }
 
@@ -91,7 +91,6 @@ class OfflineFirstJediRepository @Inject constructor(
 
         return isLimitExceeded(jedis, dbClearCacheLimit)
     }
-
 
     private fun isLimitExceeded(jedis: List<JediEntity>, limit: Long) =
         (System.currentTimeMillis() - (jedis[0].timeCreated)) > limit
