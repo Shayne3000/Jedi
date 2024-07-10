@@ -1,5 +1,6 @@
 package com.senijoshua.jedi.data.repository
 
+import com.senijoshua.jedi.data.local.JediCacheLimit
 import com.senijoshua.jedi.data.local.JediDao
 import com.senijoshua.jedi.data.local.JediEntity
 import com.senijoshua.jedi.data.model.Jedi
@@ -13,7 +14,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
@@ -27,11 +27,9 @@ import javax.inject.Inject
 class OfflineFirstJediRepository @Inject constructor(
     private val apiService: JediApi,
     private val db: JediDao,
-    private val dispatcher: CoroutineDispatcher
+    private val dispatcher: CoroutineDispatcher,
+    private val cacheLimit: JediCacheLimit,
 ) : JediRepository {
-
-    private val dbRefreshCacheLimit = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
-    private val dbClearCacheLimit = TimeUnit.MILLISECONDS.convert(7, TimeUnit.DAYS)
 
     /**
      * An observable stream of Jedi is returned from the DB which notifies us of
@@ -74,7 +72,7 @@ class OfflineFirstJediRepository @Inject constructor(
             return true
         }
 
-        return isLimitExceeded(jedis, dbRefreshCacheLimit)
+        return isLimitExceeded(jedis, cacheLimit.dbRefreshCacheLimit)
     }
 
     /**
@@ -89,9 +87,13 @@ class OfflineFirstJediRepository @Inject constructor(
             return false
         }
 
-        return isLimitExceeded(jedis, dbClearCacheLimit)
+        return isLimitExceeded(jedis, cacheLimit.dbClearCacheLimit)
     }
 
+    /**
+     * Does the current system time exceed the time at which the entry was
+     * created by more than 1 hour or so.
+     */
     private fun isLimitExceeded(jedis: List<JediEntity>, limit: Long) =
         (System.currentTimeMillis() - (jedis[0].timeCreated)) > limit
 

@@ -57,7 +57,9 @@ fun JediDetailScreen(
         onBackClicked = { onBackClicked() }
     )
 
-    viewModel.getJedi()
+    LaunchedEffect(Unit) {
+        viewModel.getJedi()
+    }
 }
 
 @Composable

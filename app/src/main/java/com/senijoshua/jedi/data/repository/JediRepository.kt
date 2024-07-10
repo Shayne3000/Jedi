@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
  * and testing.
  */
 interface JediRepository {
+
     suspend fun getJedisStream(): Flow<Result<List<Jedi>>>
 
     suspend fun getJediById(jediId: Int): Result<Jedi>

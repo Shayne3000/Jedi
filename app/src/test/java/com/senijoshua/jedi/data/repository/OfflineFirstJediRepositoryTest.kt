@@ -1,5 +1,6 @@
 package com.senijoshua.jedi.data.repository
 
+import com.senijoshua.jedi.data.local.FakeJediCacheLimit
 import com.senijoshua.jedi.data.local.FakeJediDao
 import com.senijoshua.jedi.data.model.fakeJediList
 import com.senijoshua.jedi.data.model.toLocal
@@ -9,6 +10,8 @@ import com.senijoshua.jedi.util.ERROR_TEXT
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -27,13 +30,16 @@ class OfflineFirstJediRepositoryTest {
 
     private lateinit var jediApi: FakeApi
 
+    private lateinit var cacheLimit: FakeJediCacheLimit
+
     private lateinit var repository: OfflineFirstJediRepository
 
     @Before
     fun setUp() {
         jediDao = FakeJediDao()
         jediApi = FakeApi()
-        repository = OfflineFirstJediRepository(jediApi, jediDao, testDispatcher)
+        cacheLimit = FakeJediCacheLimit()
+        repository = OfflineFirstJediRepository(jediApi, jediDao, testDispatcher, cacheLimit)
     }
 
     @Test
@@ -59,7 +65,7 @@ class OfflineFirstJediRepositoryTest {
         }
 
     @Test
-    fun `Given that the DB is not empty and does not have stale data, getJedis should return a jedi list from the DB`() =
+    fun `Given that the DB is not empty and does not have stale data, getJediStream should return a jedi list from the DB`() =
         testScope.runTest {
             jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
 
@@ -73,27 +79,40 @@ class OfflineFirstJediRepositoryTest {
     @Test
     fun `Given that the DB is not empty & has stale data, getJediStream loads a jedi list from the server on Successful request`() =
         testScope.runTest {
-            jediDao.hasStaleData = true
             jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
+            cacheLimit.hasStaleData = true
 
-            val result = repository.getJedisStream().first()
+            // TODO Use a collecting coroutine to keep listening for DB updates and assert on those updates
+
+            val result = repository.getJedisStream().take(2).toList()
 
             check(result is Result.Success)
             assertEquals(fakeJediList.first().gender, result.data.first().gender)
+            assertTrue(result.data.size > fakeJediList.size)
         }
 
     @Test
     fun `Given that the DB is not empty & has stale data, getJediStream returns an error on network request failure`() =
         testScope.runTest {
-            jediDao.hasStaleData = true
-            jediApi.shouldThrowError = true
             jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
+            cacheLimit.hasStaleData = true
+            jediApi.shouldThrowError = true
 
             val result = repository.getJedisStream().first()
 
             check(result is Result.Error)
             assertEquals(ERROR_TEXT, result.error.message)
         }
+
+    @Test
+    fun `Given that the DB is not empty, has stale data and can clear old data, getJediStream gets a newly-inserted jedi list from the DB via the server on success`() = testScope.runTest {
+        // arrange
+        jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
+
+        // act
+
+        // assert
+    }
 
 
     @Test

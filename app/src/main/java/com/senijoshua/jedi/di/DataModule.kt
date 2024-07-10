@@ -1,6 +1,8 @@
 package com.senijoshua.jedi.di
 
+import com.senijoshua.jedi.data.local.JediCacheLimit
 import com.senijoshua.jedi.data.repository.JediRepository
+import com.senijoshua.jedi.data.repository.OfflineFirstJediCacheLimit
 import com.senijoshua.jedi.data.repository.OfflineFirstJediRepository
 import dagger.Binds
 import dagger.Module
@@ -15,4 +17,8 @@ abstract class DataModule {
     @Singleton
     @Binds
     abstract fun bindJediRepository(jediRepository: OfflineFirstJediRepository): JediRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindJediCacheLimit(cacheLimit: OfflineFirstJediCacheLimit): JediCacheLimit
 }

@@ -29,6 +29,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senijoshua.jedi.R
 import com.senijoshua.jedi.data.model.Jedi
@@ -48,7 +49,7 @@ const val JEDI_LIST_TAG = "JediListTag"
 @Composable
 fun JediListScreen(
     modifier: Modifier = Modifier,
-    viewModel: JediListViewModel,
+    viewModel: JediListViewModel = hiltViewModel(),
     onNavigateToJediDetail: (Int, String) -> Unit = { _, _ -> }
 ) {
     val screenUiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -65,6 +66,10 @@ fun JediListScreen(
     )
 
     LaunchedEffect(Unit) {
+        // In short, this block executes only once at initial composition i.e. when the composable is first added to the UI
+
+        // In detail, When you define a LaunchedEffect block within your composable, Compose schedules the execution
+        // of the code inside that block only during the Composition phase of the initial build.
         viewModel.loadJedis()
     }
 }
