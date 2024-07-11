@@ -30,20 +30,4 @@ class FakeJediDao : JediDao {
     override suspend fun clear() {
         jediEntities.value = emptyList()
     }
-
-//    private fun delete() {
-//        jediEntities.value = emptyList()
-//    }
-//
-//    fun getTimeCreated(): Long? {
-//        return if (jediEntities.value.isEmpty()) {
-//            null
-//        } else {
-//            if (hasStaleData) {
-//                TimeUnit.MILLISECONDS.convert(20, TimeUnit.MINUTES)
-//            } else {
-//                System.currentTimeMillis()
-//            }
-//        }
-//     }
 }
