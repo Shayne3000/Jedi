@@ -10,8 +10,6 @@ import com.senijoshua.jedi.util.ERROR_TEXT
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -82,9 +80,8 @@ class OfflineFirstJediRepositoryTest {
             jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
             cacheLimit.hasStaleData = true
 
-            // TODO Use a collecting coroutine to keep listening for DB updates and assert on those updates
 
-            val result = repository.getJedisStream().take(2).toList()
+            val result = repository.getJedisStream().drop(1).first()
 
             check(result is Result.Success)
             assertEquals(fakeJediList.first().gender, result.data.first().gender)
@@ -106,12 +103,14 @@ class OfflineFirstJediRepositoryTest {
 
     @Test
     fun `Given that the DB is not empty, has stale data and can clear old data, getJediStream gets a newly-inserted jedi list from the DB via the server on success`() = testScope.runTest {
-        // arrange
         jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
+        cacheLimit.hasStaleData = true
+        cacheLimit.canCleanOldData = true
 
-        // act
+        val result = repository.getJedisStream().first()
 
-        // assert
+        check(result is Result.Success)
+        assertTrue(result.data.size == fakeJediList.size)
     }
 
 
