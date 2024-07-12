@@ -9,8 +9,8 @@ import javax.inject.Inject
  * either adding more items from the remote API or clearing it completely.
  */
 class OfflineFirstJediCacheLimit @Inject constructor() : JediCacheLimit {
-    override val dbRefreshCacheLimit: Long = TimeUnit.MILLISECONDS.convert(2, TimeUnit.MINUTES)
+    override val dbRefreshCacheLimit: Long = TimeUnit.MILLISECONDS.convert(1, TimeUnit.HOURS)
 
     // Ideally clearing cache timelines isn't something that should be determined locally but on the server.
-    override val dbClearCacheLimit: Long = TimeUnit.MILLISECONDS.convert(4, TimeUnit.MINUTES)
+    override val dbClearCacheLimit: Long = TimeUnit.MILLISECONDS.convert(7, TimeUnit.DAYS)
 }
