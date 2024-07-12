@@ -24,4 +24,9 @@ class FakeJediCacheLimit : JediCacheLimit {
             System.currentTimeMillis()
         }
     }
+
+    fun clear() {
+        var hasStaleData = false
+        var canCleanOldData = false
+    }
 }

@@ -18,7 +18,8 @@ sealed class Result<out T> {
  * type, T (from a Flow) inside a Result type and then parameterize that Result type
  * within a Flow.
  *
- * Essentially, it converts Flow<T> to Flow<Result<T>>.
+ * It can serve as a centralized result (i.e. success/error) handling
+ * mechanism within a Flow. Reductively, it converts Flow<T> to Flow<Result<T>>
  */
 fun <T> Flow<T>.asResult(): Flow<Result<T>> = this.map<T, Result<T>> {
     Result.Success(it)

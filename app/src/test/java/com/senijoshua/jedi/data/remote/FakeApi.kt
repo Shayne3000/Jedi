@@ -24,4 +24,8 @@ class FakeApi : JediApi {
             JediResponse(results = dummyNetworkJedi)
         }
     }
+
+    fun clear() {
+        shouldThrowError = false
+    }
 }

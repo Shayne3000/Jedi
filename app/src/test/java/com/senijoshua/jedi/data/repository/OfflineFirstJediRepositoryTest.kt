@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -132,5 +133,12 @@ class OfflineFirstJediRepositoryTest {
         val result = repository.getJediById(jediId)
 
         assertTrue(result is Result.Error)
+    }
+
+    @After
+    fun tearDown() {
+        jediDao.clear()
+        jediApi.clear()
+        cacheLimit.clear()
     }
 }

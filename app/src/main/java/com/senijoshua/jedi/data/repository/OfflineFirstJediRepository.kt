@@ -2,7 +2,6 @@ package com.senijoshua.jedi.data.repository
 
 import com.senijoshua.jedi.data.local.JediCacheLimit
 import com.senijoshua.jedi.data.local.JediDao
-import com.senijoshua.jedi.data.local.JediEntity
 import com.senijoshua.jedi.data.model.Jedi
 import com.senijoshua.jedi.data.model.toExternalModel
 import com.senijoshua.jedi.data.model.toLocal
@@ -37,18 +36,20 @@ class OfflineFirstJediRepository @Inject constructor(
      * network if the DB is empty or the held data is stale.
      */
     override suspend fun getJedisStream(): Flow<Result<List<Jedi>>> {
-        return db.getAllJedis().flowOn(dispatcher)
-            .onEach { jediEntities ->
-                if (isJediDataStaleOrEmpty(jediEntities)) {
+        return db.getAllJedis()
+            .map { jediEntities -> jediEntities.toExternalModel() }
+            .onEach {
+                if (cachedDataIsEmptyOrStale()) {
                     val jediResponse = apiService.getJedis()
 
-                    if (canCleanUpOldData(jediEntities)) {
+                    if (canCleanUpData()) {
                         db.clear()
                     }
 
                     db.insertAll(jediResponse.results.toLocal())
                 }
-            }.map { jediEntities -> jediEntities.toExternalModel() }
+            }
+            .flowOn(dispatcher)
             .asResult()
     }
 
@@ -67,12 +68,11 @@ class OfflineFirstJediRepository @Inject constructor(
      * whether the table is empty or not as `getTimeCreated()` returns null
      * if the table is empty.
      */
-    private fun isJediDataStaleOrEmpty(jedis: List<JediEntity>): Boolean {
-        if (jedis.isEmpty()) {
-            return true
-        }
-
-        return isLimitExceeded(jedis, cacheLimit.dbRefreshCacheLimit)
+    private suspend fun cachedDataIsEmptyOrStale(): Boolean {
+        return db.getTimeCreated()
+            ?.let { timeCreated -> (System.currentTimeMillis() - (timeCreated)) > cacheLimit.dbRefreshCacheLimit }
+            // The DB is empty
+            ?: true
     }
 
     /**
@@ -82,19 +82,11 @@ class OfflineFirstJediRepository @Inject constructor(
      *
      * Basically, we clear up the database after 1 week.
      */
-    private fun canCleanUpOldData(jedis: List<JediEntity>): Boolean {
-        if (jedis.isEmpty()) {
-            return false
-        }
-
-        return isLimitExceeded(jedis, cacheLimit.dbClearCacheLimit)
+    private suspend fun canCleanUpData(): Boolean {
+        return db.getTimeCreated()
+            ?.let { timeCreated -> (System.currentTimeMillis() - (timeCreated)) > cacheLimit.dbClearCacheLimit }
+            // The DB is empty, don't waste resources cleaning an empty DB
+            ?: false
     }
-
-    /**
-     * Does the current system time exceed the time at which the entry was
-     * created by more than 1 hour or so.
-     */
-    private fun isLimitExceeded(jedis: List<JediEntity>, limit: Long) =
-        (System.currentTimeMillis() - (jedis[0].timeCreated)) > limit
 
 }

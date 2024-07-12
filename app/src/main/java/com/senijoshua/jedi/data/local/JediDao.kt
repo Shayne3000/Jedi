@@ -10,12 +10,15 @@ interface JediDao {
     @Upsert
     suspend fun insertAll(jediList: List<JediEntity>)
 
-    @Query("SELECT * FROM jedi")
+    @Query("SELECT * FROM jedi ORDER BY time_created DESC")
     fun getAllJedis(): Flow<List<JediEntity>>
 
     @Query("SELECT * FROM jedi WHERE id = :jediId")
     suspend fun getJediById(jediId: Int): JediEntity
 
     @Query("DELETE FROM jedi")
-    suspend fun clear()
+    fun clear()
+
+    @Query("SELECT time_created FROM jedi ORDER BY time_created DESC LIMIT 1")
+    suspend fun getTimeCreated(): Long?
 }
