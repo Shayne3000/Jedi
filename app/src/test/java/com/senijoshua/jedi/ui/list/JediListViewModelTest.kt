@@ -34,30 +34,30 @@ class JediListViewModelTest {
 
     @Test
     fun `loading state shows on init with no error`() = runTest {
-        assertTrue(vm.uiState.value.isLoadingJedis)
-        assertTrue(vm.uiState.value.jedis.isEmpty())
+        assertTrue(vm.uiState.value.isLoadingJedi)
+        assertTrue(vm.uiState.value.jedi.isEmpty())
         assertNull(vm.uiState.value.errorMessage)
     }
 
     @Test
     fun `jediLoad returns a list of jedi on success`() = runTest {
-        vm.loadJedis()
+        vm.loadJedi()
 
-        assertTrue(vm.uiState.value.jedis.isNotEmpty())
-        assertEquals(fakeJediList[0].gender, vm.uiState.value.jedis[0].gender)
+        assertTrue(vm.uiState.value.jedi.isNotEmpty())
+        assertEquals(fakeJediList[0].gender, vm.uiState.value.jedi[0].gender)
         assertNull(vm.uiState.value.errorMessage)
-        assertFalse(vm.uiState.value.isLoadingJedis)
+        assertFalse(vm.uiState.value.isLoadingJedi)
     }
 
     @Test
     fun `jediLoad returns an error on jedi load failure`() = runTest {
         repo.shouldThrowError = true
 
-        vm.loadJedis()
+        vm.loadJedi()
 
         assertEquals(repo.errorText, vm.uiState.value.errorMessage)
-        assertTrue(vm.uiState.value.jedis.isEmpty())
-        assertFalse(vm.uiState.value.isLoadingJedis)
+        assertTrue(vm.uiState.value.jedi.isEmpty())
+        assertFalse(vm.uiState.value.isLoadingJedi)
 
         vm.errorMessageShown()
         assertNull(vm.uiState.value.errorMessage)

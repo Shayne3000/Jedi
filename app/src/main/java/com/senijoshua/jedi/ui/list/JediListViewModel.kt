@@ -20,15 +20,15 @@ class JediListViewModel @Inject constructor(
 
     val uiState: StateFlow<JediListScreenUiState> = _uiState
 
-    fun loadJedis() {
+    fun loadJedi() {
         viewModelScope.launch {
-            jediRepository.getJedisStream().collect { result ->
+            jediRepository.getJediStream().collect { result ->
                 when (result) {
                     is Result.Success -> {
                         _uiState.update { currentUiState ->
                             currentUiState.copy(
-                                isLoadingJedis = false,
-                                jedis = result.data
+                                isLoadingJedi = false,
+                                jedi = result.data
                             )
                         }
                     }
@@ -36,7 +36,7 @@ class JediListViewModel @Inject constructor(
                     is Result.Error -> {
                         _uiState.update { currentUiState ->
                             currentUiState.copy(
-                                isLoadingJedis = false,
+                                isLoadingJedi = false,
                                 errorMessage = result.error.message
                             )
                         }
@@ -57,7 +57,7 @@ class JediListViewModel @Inject constructor(
  * Data model representing the UI state of the JediListScreen at any instant in time.
  */
 data class JediListScreenUiState(
-    val isLoadingJedis: Boolean = true,
+    val isLoadingJedi: Boolean = true,
     val errorMessage: String? = null,
-    val jedis: List<Jedi> = emptyList()
+    val jedi: List<Jedi> = emptyList()
 )

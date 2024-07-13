@@ -17,7 +17,7 @@ class FakeApi : JediApi {
 
     var shouldThrowError = false
 
-    override suspend fun getJedis(): JediResponse {
+    override suspend fun getJedi(): JediResponse {
         return if (shouldThrowError) {
             throw Exception(ERROR_TEXT)
         } else {

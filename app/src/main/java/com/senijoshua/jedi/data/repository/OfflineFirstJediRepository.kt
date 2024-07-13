@@ -21,7 +21,7 @@ import javax.inject.Inject
  * of the architectural hierarchy.
  *
  * This facilitates an offline-first paradigm by employing the DB as
- * the single source of truth for getting a list of Jedis.
+ * the single source of truth for getting a list of Jedi.
  */
 class OfflineFirstJediRepository @Inject constructor(
     private val apiService: JediApi,
@@ -35,12 +35,12 @@ class OfflineFirstJediRepository @Inject constructor(
      * any changes to the Jedi table and retrieves fresh data from the
      * network if the DB is empty or the held data is stale.
      */
-    override suspend fun getJedisStream(): Flow<Result<List<Jedi>>> {
-        return db.getAllJedis()
+    override suspend fun getJediStream(): Flow<Result<List<Jedi>>> {
+        return db.getAllJedi()
             .map { jediEntities -> jediEntities.toExternalModel() }
             .onEach {
                 if (cachedDataIsEmptyOrStale()) {
-                    val jediResponse = apiService.getJedis()
+                    val jediResponse = apiService.getJedi()
 
                     if (canCleanUpData()) {
                         db.clear()

@@ -44,9 +44,9 @@ class OfflineFirstJediRepositoryTest {
     @Test
     fun `Given that the DB is empty, getJediStream should return jedi list on successful network request`() =
         testScope.runTest {
-            assertTrue(jediDao.getAllJedis().first().isEmpty())
+            assertTrue(jediDao.getAllJedi().first().isEmpty())
 
-            val result = repository.getJedisStream().drop(1).first()
+            val result = repository.getJediStream().drop(1).first()
 
             check(result is Result.Success)
             assertTrue(result.data.isNotEmpty())
@@ -56,9 +56,9 @@ class OfflineFirstJediRepositoryTest {
     fun `Given that the DB is empty, getJediStream should return an error on network request failure`() =
         testScope.runTest {
             jediApi.shouldThrowError = true
-            assertTrue(jediDao.getAllJedis().first().isEmpty())
+            assertTrue(jediDao.getAllJedi().first().isEmpty())
 
-            val result = repository.getJedisStream().first()
+            val result = repository.getJediStream().first()
 
             check(result is Result.Error)
             assertEquals(ERROR_TEXT, result.error.message)
@@ -69,7 +69,7 @@ class OfflineFirstJediRepositoryTest {
         testScope.runTest {
             jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
 
-            val result = repository.getJedisStream().first()
+            val result = repository.getJediStream().first()
 
             check(result is Result.Success)
             assertEquals(fakeJediList.first().gender, result.data.first().gender)
@@ -82,7 +82,7 @@ class OfflineFirstJediRepositoryTest {
             jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
             cacheLimit.hasStaleData = true
 
-            val result = repository.getJedisStream().drop(1).first()
+            val result = repository.getJediStream().drop(1).first()
 
             check(result is Result.Success)
             assertEquals(fakeJediList.first().gender, result.data.first().gender)
@@ -96,7 +96,7 @@ class OfflineFirstJediRepositoryTest {
             cacheLimit.hasStaleData = true
             jediApi.shouldThrowError = true
 
-            val result = repository.getJedisStream().first()
+            val result = repository.getJediStream().first()
 
             check(result is Result.Error)
             assertEquals(ERROR_TEXT, result.error.message)
@@ -113,10 +113,10 @@ class OfflineFirstJediRepositoryTest {
             cacheLimit.canCleanOldData = true
 
             // Assert that the DB has substantial items.
-            val currentJediElements = jediDao.getAllJedis().first()
+            val currentJediElements = jediDao.getAllJedi().first()
             assertTrue(currentJediElements.size > dbEntities.size)
 
-            val result = repository.getJedisStream().drop(1).first()
+            val result = repository.getJediStream().drop(1).first()
 
             check(result is Result.Success)
             // Assert that the DB's size has been trimmed down indicating that DB was cleared before insertion occurred.
@@ -131,8 +131,8 @@ class OfflineFirstJediRepositoryTest {
             cacheLimit.canCleanOldData = true
             jediApi.shouldThrowError = true
 
-            val result = repository.getJedisStream().first()
-            val currentJediElements = jediDao.getAllJedis().first()
+            val result = repository.getJediStream().first()
+            val currentJediElements = jediDao.getAllJedi().first()
 
             check(result is Result.Error)
             assertEquals(ERROR_TEXT, result.error.message)

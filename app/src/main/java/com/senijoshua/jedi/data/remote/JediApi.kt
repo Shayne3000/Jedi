@@ -7,5 +7,5 @@ import retrofit2.http.GET
  */
 interface JediApi {
     @GET("people")
-    suspend fun getJedis(): JediResponse
+    suspend fun getJedi(): JediResponse
 }

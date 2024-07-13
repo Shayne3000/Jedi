@@ -24,7 +24,7 @@ import org.junit.Test
 
 /**
  * End-to-end test that tests the complete app flow of starting the app,
- * loading up a list of Jedis, clicking on one of them, going to the detail screen
+ * loading up a list of Jedi, clicking on one of them, going to the detail screen
  * to view the details of said Jedi, and then returning to the previous screen.
  */
 @HiltAndroidTest

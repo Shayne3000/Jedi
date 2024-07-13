@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 /**
- * Denotation of the length of time that we would store Jedis in the DB before
+ * Denotation of the length of time that we would store Jedi in the DB before
  * either adding more items from the remote API or clearing it completely.
  */
 class OfflineFirstJediCacheLimit @Inject constructor() : JediCacheLimit {

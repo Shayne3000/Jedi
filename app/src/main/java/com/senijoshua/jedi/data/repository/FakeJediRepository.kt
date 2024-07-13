@@ -16,7 +16,7 @@ class FakeJediRepository @Inject constructor(): JediRepository {
     var shouldThrowError = false
     var errorText = "Error!"
 
-    override suspend fun getJedisStream(): Flow<Result<List<Jedi>>> = flow {
+    override suspend fun getJediStream(): Flow<Result<List<Jedi>>> = flow {
         if (shouldThrowError) {
             emit(Result.Error(Throwable(errorText)))
         } else {

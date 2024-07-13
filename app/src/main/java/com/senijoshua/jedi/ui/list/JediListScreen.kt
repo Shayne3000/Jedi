@@ -70,7 +70,7 @@ fun JediListScreen(
 
         // In detail, When you define a LaunchedEffect block within your composable, Compose schedules the execution
         // of the code inside that block only during the Composition phase of the initial build if the key is Unit.
-        viewModel.loadJedis()
+        viewModel.loadJedi()
     }
 }
 
@@ -130,13 +130,13 @@ fun JediListContent(
                 overflow = TextOverflow.Ellipsis
             )
 
-            if (uiState.isLoadingJedis) {
+            if (uiState.isLoadingJedi) {
                 JediCircularProgressIndicator(modifier)
-            } else if (uiState.jedis.isNotEmpty()) {
+            } else if (uiState.jedi.isNotEmpty()) {
                 LazyColumn(modifier = Modifier
                     .fillMaxSize()
                     .testTag(JEDI_LIST_TAG)) {
-                    items(items = uiState.jedis, key = { jedi -> jedi.id }) {
+                    items(items = uiState.jedi, key = { jedi -> jedi.id }) {
                         JediItem(jedi = it, onJediClicked = { jediId, jediName ->
                             onNavigateToJediDetail(jediId, jediName)
                         })
@@ -214,7 +214,7 @@ fun JediListPreview() {
     JediTheme {
         JediListContent(
             uiState = JediListScreenUiState(
-                jedis = fakeJediList
+                jedi = fakeJediList
             )
         )
     }

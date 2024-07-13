@@ -20,7 +20,7 @@ class FakeJediDao : JediDao {
         jediEntities.value = newList
     }
 
-    override fun getAllJedis(): Flow<List<JediEntity>> = jediEntities
+    override fun getAllJedi(): Flow<List<JediEntity>> = jediEntities
 
 
     override suspend fun getJediById(jediId: Int): JediEntity {

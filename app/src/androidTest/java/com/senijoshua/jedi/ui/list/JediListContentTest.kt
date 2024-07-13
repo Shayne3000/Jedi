@@ -37,7 +37,7 @@ class JediListContentTest {
     @Test
     fun jediListContent_showsLoadingStateElements_OnLoading() {
         setupScreenContentUnderTest(
-            JediListScreenUiState(isLoadingJedis = true)
+            JediListScreenUiState(isLoadingJedi = true)
         )
 
         composeTestRule.onNodeWithText(jediListTitle).assertIsDisplayed()
@@ -57,7 +57,7 @@ class JediListContentTest {
     @Test
     fun jediListContent_showsJediList_onSuccessfulLoad() {
         setupScreenContentUnderTest(
-            JediListScreenUiState(isLoadingJedis = false, jedis = fakeJediList)
+            JediListScreenUiState(isLoadingJedi = false, jedi = fakeJediList)
         )
 
         composeTestRule.onNodeWithTag(JEDI_LIST_TAG).assertIsDisplayed()
@@ -73,7 +73,7 @@ class JediListContentTest {
         val errorMessage = "Error!"
 
         setupScreenContentUnderTest(
-            JediListScreenUiState(isLoadingJedis = false, errorMessage)
+            JediListScreenUiState(isLoadingJedi = false, errorMessage)
         )
 
         composeTestRule.onNodeWithText(errorMessage).assertIsDisplayed()

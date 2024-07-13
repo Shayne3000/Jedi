@@ -11,7 +11,7 @@ interface JediDao {
     suspend fun insertAll(jediList: List<JediEntity>)
 
     @Query("SELECT * FROM jedi ORDER BY time_created DESC")
-    fun getAllJedis(): Flow<List<JediEntity>>
+    fun getAllJedi(): Flow<List<JediEntity>>
 
     @Query("SELECT * FROM jedi WHERE id = :jediId")
     suspend fun getJediById(jediId: Int): JediEntity
