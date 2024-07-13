@@ -2,7 +2,6 @@ package com.senijoshua.jedi.ui.list
 
 import com.senijoshua.jedi.data.model.fakeJediList
 import com.senijoshua.jedi.data.repository.FakeJediRepository
-import com.senijoshua.jedi.util.ERROR_TEXT
 import com.senijoshua.jedi.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -56,7 +55,7 @@ class JediListViewModelTest {
 
         vm.loadJedis()
 
-        assertEquals(ERROR_TEXT, vm.uiState.value.errorMessage)
+        assertEquals(repo.errorText, vm.uiState.value.errorMessage)
         assertTrue(vm.uiState.value.jedis.isEmpty())
         assertFalse(vm.uiState.value.isLoadingJedis)
 

@@ -3,7 +3,6 @@ package com.senijoshua.jedi.ui.detail
 import androidx.lifecycle.SavedStateHandle
 import com.senijoshua.jedi.data.model.fakeJediList
 import com.senijoshua.jedi.data.repository.FakeJediRepository
-import com.senijoshua.jedi.util.ERROR_TEXT
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -62,7 +61,7 @@ class JediDetailViewModelTest {
 
         vm.getJedi()
 
-        assertEquals(JediDetailScreenUiState.Error(errorMessage = ERROR_TEXT), vm.uiState.value)
+        assertEquals(JediDetailScreenUiState.Error(errorMessage = repo.errorText), vm.uiState.value)
 
         Dispatchers.resetMain()
     }

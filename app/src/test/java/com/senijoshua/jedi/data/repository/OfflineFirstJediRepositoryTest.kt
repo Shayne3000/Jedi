@@ -56,6 +56,7 @@ class OfflineFirstJediRepositoryTest {
     fun `Given that the DB is empty, getJediStream should return an error on network request failure`() =
         testScope.runTest {
             jediApi.shouldThrowError = true
+            assertTrue(jediDao.getAllJedis().first().isEmpty())
 
             val result = repository.getJedisStream().first()
 
@@ -81,7 +82,6 @@ class OfflineFirstJediRepositoryTest {
             jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
             cacheLimit.hasStaleData = true
 
-
             val result = repository.getJedisStream().drop(1).first()
 
             check(result is Result.Success)
@@ -103,17 +103,41 @@ class OfflineFirstJediRepositoryTest {
         }
 
     @Test
-    fun `Given that the DB is not empty, has stale data and can clear old data, getJediStream gets a newly-inserted jedi list from the DB via the server on success`() = testScope.runTest {
-        jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
-        cacheLimit.hasStaleData = true
-        cacheLimit.canCleanOldData = true
+    fun `Given that the DB is not empty, has stale data and can clear old data, getJediStream gets a newly-inserted jedi list from the DB via the server on success`() =
+        testScope.runTest {
+            // Populate the DB
+            val dbEntities = jediApi.dummyNetworkJedi.toLocal()
+            jediDao.insertAll(dbEntities + dbEntities)
 
-        val result = repository.getJedisStream().first()
+            cacheLimit.hasStaleData = true
+            cacheLimit.canCleanOldData = true
 
-        check(result is Result.Success)
-        assertTrue(result.data.size == fakeJediList.size)
+            // Assert that the DB has substantial items.
+            val currentJediElements = jediDao.getAllJedis().first()
+            assertTrue(currentJediElements.size > dbEntities.size)
+
+            val result = repository.getJedisStream().drop(1).first()
+
+            check(result is Result.Success)
+            // Assert that the DB's size has been trimmed down indicating that DB was cleared before insertion occurred.
+            assertTrue(result.data.size < currentJediElements.size)
+        }
+
+    @Test
+    fun `Given that the DB is not empty, its data is stale, and we can clear old data, getJediStream returns data from the DB on network failure`() =
+        testScope.runTest {
+            jediDao.insertAll(jediApi.dummyNetworkJedi.toLocal())
+            cacheLimit.hasStaleData = true
+            cacheLimit.canCleanOldData = true
+            jediApi.shouldThrowError = true
+
+            val result = repository.getJedisStream().first()
+            val currentJediElements = jediDao.getAllJedis().first()
+
+            check(result is Result.Error)
+            assertEquals(ERROR_TEXT, result.error.message)
+            assertTrue(currentJediElements.isNotEmpty())
     }
-
 
     @Test
     fun `Given an id, getJediById returns the correct Jedi model on success`() = testScope.runTest {

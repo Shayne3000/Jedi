@@ -1,6 +1,5 @@
 package com.senijoshua.jedi.ui.detail
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
@@ -29,11 +28,9 @@ fun NavGraphBuilder.jediDetailScreen(
         JEDI_DETAIL_ROUTE,
         arguments = listOf(navArgument(JEDI_DETAIL_NAME_ARG) { type = NavType.StringType })
     ) { backStackEntry ->
-        val jediDetailViewModel = hiltViewModel<JediDetailViewModel>()
 
         JediDetailScreen(
             topBarTitle = backStackEntry.arguments?.getString(JEDI_DETAIL_NAME_ARG)!!,
-            viewModel = jediDetailViewModel,
             onBackClicked = {
                 onBackClicked()
             })

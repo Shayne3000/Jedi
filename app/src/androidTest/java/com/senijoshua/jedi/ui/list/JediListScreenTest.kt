@@ -62,7 +62,6 @@ class JediListScreenTest {
     @Test
     fun jediListScreen_showErrorSnackBar_onLoadFailure() {
         val fakeRepository = (repository as FakeJediRepository)
-        val errorText = "error"
 
         fakeRepository.shouldThrowError = true
 
@@ -70,7 +69,7 @@ class JediListScreenTest {
 
         composeTestRule.onNodeWithText(jediListTitle).assertIsDisplayed()
         composeTestRule.onNodeWithTag(JEDI_LIST_TAG).assertDoesNotExist()
-        composeTestRule.onNodeWithText(errorText).assertIsDisplayed()
+        composeTestRule.onNodeWithText(fakeRepository.errorText).assertIsDisplayed()
     }
 
     /**

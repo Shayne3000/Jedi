@@ -1,6 +1,5 @@
 package com.senijoshua.jedi.ui.list
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
@@ -14,8 +13,7 @@ fun NavGraphBuilder.jediListScreen(
     onNavigateToJediDetail: (Int, String) -> Unit
 ) {
     composable(JediListRoute){
-        val viewModel = hiltViewModel<JediListViewModel>()
-        JediListScreen(viewModel = viewModel, onNavigateToJediDetail = { jediId, jediName ->
+        JediListScreen(onNavigateToJediDetail = { jediId, jediName ->
             onNavigateToJediDetail(jediId, jediName)
         })
     }

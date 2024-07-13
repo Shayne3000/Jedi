@@ -69,7 +69,7 @@ fun JediListScreen(
         // In short, this block executes only once at initial composition i.e. when the composable is first added to the UI
 
         // In detail, When you define a LaunchedEffect block within your composable, Compose schedules the execution
-        // of the code inside that block only during the Composition phase of the initial build.
+        // of the code inside that block only during the Composition phase of the initial build if the key is Unit.
         viewModel.loadJedis()
     }
 }

@@ -14,17 +14,18 @@ import javax.inject.Inject
 class FakeJediRepository @Inject constructor(): JediRepository {
 
     var shouldThrowError = false
+    var errorText = "Error!"
 
     override suspend fun getJedisStream(): Flow<Result<List<Jedi>>> = flow {
         if (shouldThrowError) {
-            emit(Result.Error(Throwable("Error!")))
+            emit(Result.Error(Throwable(errorText)))
         } else {
             emit(Result.Success(fakeJediList))
         }
     }
 
     override suspend fun getJediById(jediId: Int): Result<Jedi> = if (shouldThrowError) {
-        Result.Error(Throwable("Error!"))
+        Result.Error(Throwable(errorText))
     } else {
         Result.Success(fakeJediList[jediId])
     }

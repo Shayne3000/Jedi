@@ -11,6 +11,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.lifecycle.SavedStateHandle
 import com.senijoshua.jedi.R
+import com.senijoshua.jedi.data.model.Jedi
 import com.senijoshua.jedi.data.model.fakeJediList
 import com.senijoshua.jedi.data.repository.FakeJediRepository
 import com.senijoshua.jedi.ui.MainActivity
@@ -52,7 +53,7 @@ class JediDetailScreenTest {
     fun jediDetailScreen_showsCorrectJedi_onLoadSuccess() {
         val jedi = fakeJediList[1]
 
-        setContent(jedi.name)
+        setContent(jedi)
 
         composeTestRule.onNodeWithContentDescription(backIcon).assertIsDisplayed()
         composeTestRule.onNodeWithText(jedi.name).assertIsDisplayed()
@@ -64,30 +65,29 @@ class JediDetailScreenTest {
     @Test
     fun jediDetailScreen_showsError_onLoadFailure() {
         val jedi = fakeJediList[1]
-        val errorText = "error"
 
         jediRepository.shouldThrowError = true
 
-        setContent(jedi.name)
+        setContent(jedi)
 
         composeTestRule.onNodeWithText(jedi.name).assertIsDisplayed()
 
         composeTestRule.onNode(hasTestTag(CONSTRAINT_LAYOUT_TAG)).assertDoesNotExist()
         composeTestRule.onNodeWithTag(jedi.gender).assertDoesNotExist()
 
-        composeTestRule.onNodeWithText(errorText).assertIsDisplayed()
+        composeTestRule.onNodeWithText(jediRepository.errorText).assertIsDisplayed()
     }
 
     /**
      * Setup content under test
      */
-    private fun setContent(jediName: String) {
+    private fun setContent(jedi: Jedi) {
         composeTestRule.activity.setContent {
             JediTheme {
                 JediDetailScreen(
-                    topBarTitle = jediName,
+                    topBarTitle = jedi.name,
                     viewModel = JediDetailViewModel(
-                        SavedStateHandle(mapOf(JEDI_DETAIL_ID_ARG to "1")),
+                        SavedStateHandle(mapOf(JEDI_DETAIL_ID_ARG to jedi.id.toString())),
                         jediRepository
                     )
                 )

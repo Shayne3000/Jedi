@@ -31,6 +31,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.senijoshua.jedi.R
 import com.senijoshua.jedi.data.model.Jedi
@@ -43,7 +44,7 @@ const val CONSTRAINT_LAYOUT_TAG = "constraintLayoutContainer"
 @Composable
 fun JediDetailScreen(
     modifier: Modifier = Modifier,
-    viewModel: JediDetailViewModel,
+    viewModel: JediDetailViewModel = hiltViewModel(),
     topBarTitle: String = "",
     onBackClicked: () -> Unit = {}
 ) {

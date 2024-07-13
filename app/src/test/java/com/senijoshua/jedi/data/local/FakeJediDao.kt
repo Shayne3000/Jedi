@@ -9,9 +9,6 @@ import java.util.concurrent.TimeUnit
  * testing.
  */
 class FakeJediDao : JediDao {
-
-    var canHaveStaleData: Boolean = false
-
     // In-memory "database" against which we execute DB operations.
     private var jediEntities = MutableStateFlow(
         emptyList<JediEntity>()
@@ -31,7 +28,7 @@ class FakeJediDao : JediDao {
     }
 
     override suspend fun getTimeCreated(): Long? {
-        return if (canHaveStaleData) {
+        return if (jediEntities.value.isEmpty()) {
             null
         } else {
             TimeUnit.MILLISECONDS.convert(20, TimeUnit.MINUTES)
@@ -40,6 +37,5 @@ class FakeJediDao : JediDao {
 
     override fun clear() {
         jediEntities.value = emptyList()
-        canHaveStaleData = false
     }
 }
