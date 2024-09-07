@@ -31,6 +31,8 @@ class JediListScreenTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
+    // Really not necessary just wanted to triage the approach of
+    // letting hilt replace the injected implementation with a test alternative
     @Inject
     lateinit var repository: JediRepository
     private lateinit var jediListTitle: String
