@@ -163,7 +163,7 @@ fun JediItem(
             .fillMaxWidth()
             .testTag(JEDI_ITEM_CARD_TAG),
         elevation = CardDefaults.cardElevation(defaultElevation = dimensionResource(id = R.dimen.card_elevation)),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {
         Column(modifier = Modifier
             .fillMaxSize()
@@ -179,7 +179,7 @@ fun JediItem(
                 ),
                 text = jedi.name,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )
@@ -192,7 +192,7 @@ fun JediItem(
                 ),
                 text = jedi.gender,
                 style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1
             )

@@ -1,21 +1,22 @@
 [versions]
-androidGradlePlugin = "8.2.0"
+androidGradlePlugin = "8.5.2"
 retrofit = "2.9.0"
-kotlinCoroutines = "1.6.4"
-navigation = "2.6.0"
-lifecycle = "2.6.2"
-room = "2.5.2"
-ktx = "1.10.1"
+kotlinCoroutines = "1.7.3"
+navigation = "2.8.0"
+lifecycle = "2.8.5"
+room = "2.6.1"
+ksp = "2.0.0-1.0.23"
+ktx = "1.13.1"
 constraintLayoutCompose = "1.0.1"
-composeBom = "2023.06.01"
-composeActivity = "1.7.2"
-hilt = "2.46.1"
-hiltNavigationCompose = "1.0.0"
-kotlin = "1.8.20"
-moshi = "1.14.0"
+composeBom = "2024.09.00"
+composeActivity = "1.9.2"
+hilt = "2.50"
+hiltNavigationCompose = "1.2.0"
+kotlin = "2.0.0"
+moshi = "1.15.1"
 okHttpBom = "4.10.0"
 junit = "4.13.2"
-testRunner = "1.5.2"
+testRunner = "1.6.2"
 
 [libraries]
 # Base
@@ -97,4 +98,6 @@ compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 room = { id = "androidx.room", version.ref = "room" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
