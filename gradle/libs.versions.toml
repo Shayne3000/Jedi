@@ -1,0 +1,100 @@
+[versions]
+androidGradlePlugin = "8.2.0"
+retrofit = "2.9.0"
+kotlinCoroutines = "1.6.4"
+navigation = "2.6.0"
+lifecycle = "2.6.2"
+room = "2.5.2"
+ktx = "1.10.1"
+constraintLayoutCompose = "1.0.1"
+composeBom = "2023.06.01"
+composeActivity = "1.7.2"
+hilt = "2.46.1"
+hiltNavigationCompose = "1.0.0"
+kotlin = "1.8.20"
+moshi = "1.14.0"
+okHttpBom = "4.10.0"
+junit = "4.13.2"
+testRunner = "1.5.2"
+
+[libraries]
+# Base
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "ktx" }
+activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "composeActivity" }
+kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlin" }
+
+# Lifecycle compiler
+lifecycle-compiler = { group = "androidx.lifecycle", name = "lifecycle-compiler", version.ref = "lifecycle" }
+
+# Lifecycle utilities for Compose
+lifecycle-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+
+# ComposeUI
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+
+# Compose Constraint Layout
+compose-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout-compose", version.ref = "constraintLayoutCompose" }
+
+# Navigation Compose
+navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+
+# Hilt
+hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+
+# Room
+room = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+
+# Kotlin Coroutine & Flows
+kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinCoroutines" }
+
+# OkHttp3
+okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okHttpBom" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor" }
+
+# Retrofit2
+retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
+retrofit-moshi-converter = { group = "com.squareup.retrofit2", name = "converter-moshi", version.ref = "retrofit" }
+
+# Moshi
+moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi" }
+moshi-codegen = { group = "com.squareup.moshi", name = "moshi-kotlin-codegen", version.ref = "moshi" }
+
+### Test dependencies ###
+
+# Junit
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+
+# Android Test Runner
+test-runner = { group = "androidx.test", name = "runner", version.ref = "testRunner" }
+
+# Navigation Testing
+navigation-testing = { group = "androidx.navigation", name = "navigation-testing", version.ref = "navigation" }
+
+# Hilt testing
+hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
+
+# Room testing
+room-testing = { group = "androidx.room", name = "room-testing", version.ref = "room" }
+
+# Kotlin Coroutines test
+kotlin-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinCoroutines" }
+
+# Compose UI test
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+room = { id = "androidx.room", version.ref = "room" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }

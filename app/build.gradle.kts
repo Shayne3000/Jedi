@@ -1,10 +1,10 @@
 @file:Suppress("UnstableApiUsage")
 
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlinAndroid)
     kotlin("kapt")
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -61,6 +61,7 @@ android {
     }
 
     composeOptions {
+        // TODO Update the Kotlin version and Use the compose compiler
         kotlinCompilerExtensionVersion = "1.4.6"
     }
 
@@ -84,73 +85,54 @@ kapt {
 }
 
 dependencies {
-    val retrofitVersion = "2.9.0"
-    val kotlinCoroutinesVersion = "1.6.4"
-    val navigationVersion = "2.6.0"
-    val lifecycleVersion = "2.6.2"
-    val roomVersion = "2.5.2"
-
-    implementation("androidx.core:core-ktx:1.10.1")
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.20"))
-    implementation("androidx.activity:activity-compose:1.7.2")
-    // navigation
-    implementation("androidx.navigation:navigation-compose:$navigationVersion")
-    // Hilt
-    implementation("com.google.dagger:hilt-android:2.46.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.46.1")
-    // Hilt with Navigation Compose
-    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
-    // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
-    // ViewModel utilities for Compose
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleVersion")
-    // Lifecycle utilities for Compose
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycleVersion")
-    // Compose UI
-    implementation(platform("androidx.compose:compose-bom:2023.06.01"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
-    // ComposeUI ConstraintLayout
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    // Room
-    implementation("androidx.room:room-runtime:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
-    implementation("androidx.room:room-ktx:$roomVersion")
-    // Retrofit
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
-    // Moshi
-    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
-    // OkHttp3
-    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.10.0"))
-    // define any required OkHttp artifacts without version
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.okhttp3:logging-interceptor")
-    // Kotlin Coroutines (might contain Flow)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutinesVersion")
-    // Room
-    implementation("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    implementation(libs.core.ktx)
+    implementation(platform(libs.kotlin.bom))
+    implementation(libs.activity.compose)
     // Lifecycle compiler
-    kapt("androidx.lifecycle:lifecycle-compiler:$lifecycleVersion")
-    // Room compiler
-    kapt("androidx.room:room-compiler:$roomVersion")
+    kapt(libs.lifecycle.compiler)
+    // navigation
+    implementation(libs.navigation)
+    // Hilt
+    implementation(libs.hilt)
+    implementation(libs.hilt.navigation.compose)
+    kapt(libs.hilt.compiler)
+    // Lifecycle utilities for Compose
+    implementation(libs.lifecycle.compose)
+    // Compose UI
+    implementation(platform(libs.compose.bom))
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
+    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3)
+    implementation(libs.compose.constraintlayout)
+    // Room
+    implementation(libs.room)
+    kapt(libs.room.compiler)
     // Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$roomVersion")
+    implementation(libs.room.ktx)
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.moshi.converter)
+    // Moshi
+    implementation(libs.moshi.kotlin)
+    kapt(libs.moshi.codegen)
+    // OkHttp3
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
+    // Kotlin Coroutines (might contain Flow)
+    implementation(libs.kotlin.coroutines)
     // Local test dependencies
-    testImplementation("androidx.room:room-testing:$roomVersion")
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
+    testImplementation(libs.room.testing)
+    testImplementation(libs.junit)
+    testImplementation(libs.kotlin.coroutines.test)
     // Instrumented test dependencies
-    androidTestImplementation("androidx.navigation:navigation-testing:$navigationVersion")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2022.10.00"))
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.46.1")
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.46.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    androidTestImplementation(libs.navigation.testing)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.test.runner)
+    kaptAndroidTest(libs.hilt.compiler)
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test.manifest)
 }
